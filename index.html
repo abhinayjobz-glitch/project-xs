@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TextilWorld — Operations CRM</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; }
+  .nav-item { transition: background 0.15s; }
+  .nav-item:hover { background: rgba(255,255,255,0.12); }
+  .nav-item.active { background: rgba(255,255,255,0.2); border-left: 3px solid #C9A84C; }
+  .flag-red { background: #FEE2E2; border-left: 4px solid #DC2626; }
+  .flag-yellow { background: #FFFBEB; border-left: 4px solid #F59E0B; }
+  .badge-dpd { background: #DC2626; color: white; }
+  .badge-inpost { background: #FBBF24; color: #1a1a1a; }
+  .badge-gls { background: #2563EB; color: white; }
+  .badge-dhl { background: #FCD34D; color: #1a1a1a; }
+  .badge-ups { background: #92400E; color: white; }
+  .badge-orlen { background: #16A34A; color: white; }
+  input, select, textarea { border: 1px solid #D1D5DB; border-radius: 6px; padding: 6px 10px; width: 100%; font-size: 14px; }
+  input:focus, select:focus { outline: 2px solid #1B3A6B; border-color: transparent; }
+  .stat-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .table-row:hover { background: #F8FAFC; }
+  .btn-primary { background: #1B3A6B; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; border: none; }
+  .btn-primary:hover { background: #152d54; }
+  .btn-secondary { background: #E5E7EB; color: #374151; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; border: none; }
+  .btn-secondary:hover { background: #D1D5DB; }
+  .btn-danger { background: #DC2626; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; border: none; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: flex; align-items: center; justify-content: center; }
+  .modal { background: white; border-radius: 12px; padding: 28px; width: 600px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .sidebar { width: 240px; min-height: 100vh; background: #1B3A6B; }
+  .main { flex: 1; background: #F1F5F9; min-height: 100vh; }
+  .dispute-open { color: #DC2626; font-weight: 600; }
+  .dispute-submitted { color: #D97706; font-weight: 600; }
+  .dispute-won { color: #16A34A; font-weight: 600; }
+  .dispute-lost { color: #6B7280; font-weight: 600; }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+// ── INITIAL SAMPLE DATA ──────────────────────────────────────────────────────
+const INITIAL_ORDERS = [
+  { id: "BL-10421", date: "2026-06-05", customer: "Anna Kowalska", channel: "Shopify", products: "Wiskoza Czarna 1.5m, Szyfon Biały 0.5m", courier: "DPD", tracking: "DPD12345678PL", status: "Wysłane", weight_declared: 1.8, dims_declared: "30x20x5", weight_billed: 2.4, dims_billed: "30x20x5", dispute_status: "Open", dispute_amount: 4.20, photos: [], notes: "GLS overcharged — 0.6kg difference" },
+  { id: "BL-10420", date: "2026-06-05", customer: "Fashion School Kraków (KSA)", channel: "B2B Direct", products: "Dzianina Jersey Granatowa 20m, Bawełna Biała 10m", courier: "GLS", tracking: "GLS887765PL", status: "Wysłane", weight_declared: 18.0, dims_declared: "40x40x150", weight_billed: 24.5, dims_billed: "50x50x150", dispute_status: "Submitted", dispute_amount: 42.00, photos: [], notes: "Wrong box size category billed — declared 40x40x150, billed as 50x50x150" },
+  { id: "BL-10419", date: "2026-06-04", customer: "Tomasz Nowak", channel: "Allegro", products: "Aksamit Cuba Welur Ciemny Bordo 1m", courier: "InPost", tracking: "INPOST998877", status: "Dostarczono", weight_declared: 0.6, dims_declared: "20x15x5", weight_billed: 0.6, dims_billed: "20x15x5", dispute_status: null, dispute_amount: 0, photos: [], notes: "" },
+  { id: "BL-10418", date: "2026-06-04", customer: "Magdalena Wiśniewska", channel: "Shopify", products: "Krepa Ameryk. Różowa 2m, Krepa Ameryk. Czarna 1m", courier: "DPD", tracking: "DPD99001122PL", status: "W transporcie", weight_declared: 2.1, dims_declared: "30x25x8", weight_billed: 3.0, dims_billed: "30x25x8", dispute_status: "Open", dispute_amount: 6.30, photos: [], notes: "" },
+  { id: "BL-10417", date: "2026-06-03", customer: "MedScrubs Polska Sp. z o.o.", channel: "B2B Direct", products: "Bawełna Medyczna Zielona 50m", courier: "DHL", tracking: "DHL445566PL", status: "Dostarczono", weight_declared: 22.0, dims_declared: "30x30x150", weight_billed: 22.0, dims_billed: "30x30x150", dispute_status: "Won", dispute_amount: 0, photos: [], notes: "Previous dispute won — DHL corrected billing" },
+  { id: "BL-10416", date: "2026-06-03", customer: "Katarzyna Zielińska", channel: "Etsy", products: "Szyfon Łososiowy 0.5m", courier: "InPost", tracking: "INPOST556677", status: "Dostarczono", weight_declared: 0.3, dims_declared: "20x15x3", weight_billed: 0.3, dims_billed: "20x15x3", dispute_status: null, dispute_amount: 0, photos: [], notes: "" },
+  { id: "BL-10415", date: "2026-06-02", customer: "Armia Polska — Dostawca", channel: "B2B Direct", products: "Tkanina Techniczna Khaki 100m, Polar Wojskowy 50m", courier: "GLS", tracking: "GLS334455PL", status: "Wysłane", weight_declared: 48.0, dims_declared: "60x60x150", weight_billed: 62.0, dims_billed: "60x60x150", dispute_status: "Open", dispute_amount: 98.00, photos: [], notes: "14kg overcharge — preparing evidence" },
+  { id: "BL-10414", date: "2026-06-02", customer: "Piotr Lewandowski", channel: "Amazon", products: "Wiskoza Granatowa 1m", courier: "DPD", tracking: "DPD11223344PL", status: "Dostarczono", weight_declared: 0.5, dims_declared: "20x15x4", weight_billed: 0.5, dims_billed: "20x15x4", dispute_status: null, dispute_amount: 0, photos: [], notes: "" },
+];
+
+const INITIAL_INVENTORY = [
+  { sku: "TW-VIS-BLK-150", name: "Wiskoza Gładka Czarna 150cm", category: "Wiskoza", stock: 48, reorder_point: 20, last_sold: "2026-06-05", status: "OK", units_sold_30d: 31 },
+  { sku: "TW-AKS-BORDO-150", name: "Aksamit Cuba Welur Ciemny Bordo", category: "Aksamit/Welur", stock: 0, reorder_point: 10, last_sold: "2026-05-28", status: "PRE_ORDER_BUG", units_sold_30d: 12, note: "Bestseller — showing as Pre-Order on website. Fix in Shopify immediately." },
+  { sku: "TW-VIS-ZOL-150", name: "Wiskoza Gładka Żółta 150cm", category: "Wiskoza", stock: 0, reorder_point: 8, last_sold: "2026-05-30", status: "NO_BUY_BUTTON", units_sold_30d: 8, note: "Showing no buy button on website. Stock = 0 in Shopify but check warehouse." },
+  { sku: "TW-AKS-NIEBIESKI-150", name: "Aksamit Cuba Welur Królewski Niebieski", category: "Aksamit/Welur", stock: 0, reorder_point: 8, last_sold: "2026-05-25", status: "NO_BUY_BUTTON", units_sold_30d: 7, note: "No buy button on website." },
+  { sku: "TW-KREPA-ROZA-150", name: "Krepa Amerykańska Różowa", category: "Krepa", stock: 22, reorder_point: 15, last_sold: "2026-06-04", status: "OK", units_sold_30d: 18 },
+  { sku: "TW-DZIAN-GRANAT-150", name: "Dzianina Jersey Granatowa 150cm", category: "Dzianiny", stock: 35, reorder_point: 25, last_sold: "2026-06-05", status: "OK", units_sold_30d: 29 },
+  { sku: "TW-SZY-BIAL-150", name: "Szyfon Biały 150cm", category: "Szyfon", stock: 6, reorder_point: 12, last_sold: "2026-06-03", status: "LOW_STOCK", units_sold_30d: 22 },
+  { sku: "TW-BAW-BIAL-150", name: "Bawełna Gładka Biała 150cm", category: "Bawełna", stock: 55, reorder_point: 20, last_sold: "2026-06-05", status: "OK", units_sold_30d: 15 },
+];
+
+const INITIAL_B2B = [
+  { id: 1, company: "KSA — Cracow School of Art & Fashion Design", contact: "Dyrektor Zamówień", email: "zamowienia@ksa.krakow.pl", type: "Fashion School", city: "Kraków", status: "Active", monthly_spend: 3200, last_order: "2026-06-05", notes: "Orders jersey and wiskoza in bulk monthly. 64 students." },
+  { id: 2, company: "MedScrubs Polska Sp. z o.o.", contact: "Jan Malinowski", email: "jan@medscrubs.pl", type: "Medical / Scrubs", city: "Warsaw", status: "Active", monthly_spend: 4800, last_order: "2026-06-03", notes: "Medical fabric for scrubs. Requires OEKO-TEX certification documents with every order." },
+  { id: 3, company: "Armia Polska — Dostawca Mundurów", contact: "Ppłk. Kowalczyk", email: "zaopatrzenie@wojsko.pl", type: "Army / Military", city: "Warsaw", status: "Pending", monthly_spend: 12000, last_order: "2026-06-02", notes: "Large order for technical and outdoor fabrics. Currently in dispute with GLS on last shipment." },
+  { id: 4, company: "Meble Artystyczne Wrocław", contact: "Beata Pawlak", email: "beata@meble-art.pl", type: "Furniture / Upholstery", city: "Wrocław", status: "Prospect", monthly_spend: 0, last_order: null, notes: "Interested in velour and boucle for furniture upholstery. Follow up needed." },
+  { id: 5, company: "VIAMODA University Warsaw", contact: "Dział Zakupów", email: "zakupy@viamoda.edu.pl", type: "Fashion School", city: "Warsaw", status: "Prospect", monthly_spend: 0, last_order: null, notes: "Outreach sent 2026-06-01. No response yet. Follow up." },
+];
+
+const PACKAGE_SIZES = [
+  { type: "Folio A", dims: "do 35×25×5 cm", weight: "do 1 kg", fabrics: "Próbki, małe zamówienia" },
+  { type: "Folio B", dims: "do 40×30×10 cm", weight: "1–3 kg", fabrics: "Szyfon, krepa lekka" },
+  { type: "Folio C", dims: "do 60×40×15 cm", weight: "3–10 kg", fabrics: "Wiskoza, bawełna, satyna" },
+  { type: "Rola 20×20×150", dims: "20×20×150 cm", weight: "10–15 kg", fabrics: "Muslin, Satyna, Jedwab/Silk" },
+  { type: "Rola 30×30×150", dims: "30×30×150 cm", weight: "15–25 kg", fabrics: "Barbie, Skom, Muslin 150cm" },
+  { type: "Rola 30×30×180", dims: "30×30×180 cm", weight: "25–31 kg", fabrics: "Single Jersey, Dresówka, Boucle, Zamsz, Tencel, Pikówka" },
+  { type: "Rola 40×40×150", dims: "40×40×150 cm", weight: "20–31 kg", fabrics: "Do 11 rolek" },
+  { type: "Rola 50×50×150", dims: "50×50×150 cm", weight: "20–31 kg", fabrics: "Do 14 rolek" },
+  { type: "Rola 60×60×150", dims: "60×60×150 cm", weight: "20–31 kg", fabrics: "Do 14 rolek (heavy bulky)" },
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function useLocalStorage(key, initial) {
+  const [state, setState] = useState(() => {
+    try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : initial; }
+    catch { return initial; }
+  });
+  const set = useCallback(v => { setState(v); try { localStorage.setItem(key, JSON.stringify(v)); } catch {} }, [key]);
+  return [state, set];
+}
+
+function CourierBadge({ courier }) {
+  const map = { DPD: "badge-dpd", InPost: "badge-inpost", GLS: "badge-gls", DHL: "badge-dhl", UPS: "badge-ups", "ORLEN Paczka": "badge-orlen" };
+  return <span className={`inline-block px-2 py-0.5 rounded text-xs font-bold ${map[courier] || "bg-gray-200 text-gray-700"}`}>{courier}</span>;
+}
+
+function StatusBadge({ status }) {
+  const map = { Open: "dispute-open", Submitted: "dispute-submitted", Won: "dispute-won", Lost: "dispute-lost" };
+  if (!status) return <span className="text-gray-400 text-sm">—</span>;
+  return <span className={map[status] || "text-gray-600"}>{status}</span>;
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────────────────────
+const TABS = [
+  { id: "dashboard", label: "Dashboard", icon: "📊" },
+  { id: "orders", label: "Zamówienia / Orders", icon: "📦" },
+  { id: "disputes", label: "Spory Kurierskie / Disputes", icon: "⚠️" },
+  { id: "couriers", label: "Statystyki Kurierów", icon: "🚚" },
+  { id: "inventory", label: "Stany Magazynowe", icon: "🏭" },
+  { id: "b2b", label: "Klienci B2B", icon: "🏢" },
+  { id: "packages", label: "Rozmiary Opakowań", icon: "📐" },
+];
+
+function Sidebar({ active, setActive }) {
+  return (
+    <div className="sidebar flex flex-col">
+      <div className="p-5 border-b border-blue-800">
+        <div className="text-white font-bold text-lg">TextilWorld</div>
+        <div className="text-blue-300 text-xs mt-1">Operations CRM v1.0</div>
+        <div className="text-blue-400 text-xs mt-0.5">Sękocin Nowy, Warsaw</div>
+      </div>
+      <nav className="flex-1 py-4">
+        {TABS.map(t => (
+          <button key={t.id} onClick={() => setActive(t.id)}
+            className={`nav-item w-full text-left px-5 py-3 text-sm text-blue-100 flex items-center gap-3 ${active === t.id ? "active" : ""}`}>
+            <span>{t.icon}</span><span>{t.label}</span>
+          </button>
+        ))}
+      </nav>
+      <div className="p-4 border-t border-blue-800 text-blue-400 text-xs">
+        <div>Intern: Abhinay Pratap Singh</div>
+        <div>CEO: Praveer Lakhani</div>
+        <div className="mt-1 text-blue-500">textilworld.pl</div>
+      </div>
+    </div>
+  );
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function Dashboard({ orders, inventory, b2b }) {
+  const openDisputes = orders.filter(o => o.dispute_status === "Open");
+  const totalOvercharge = orders.filter(o => o.dispute_status && o.dispute_status !== "Won" && o.dispute_status !== null)
+    .reduce((s, o) => s + (o.dispute_amount || 0), 0);
+  const zeroStock = inventory.filter(i => i.stock === 0);
+  const websiteBugs = inventory.filter(i => i.status === "PRE_ORDER_BUG" || i.status === "NO_BUY_BUTTON");
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Dashboard — Podsumowanie</h1>
+
+      {/* Alert banner */}
+      {(openDisputes.length > 0 || websiteBugs.length > 0) && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="font-semibold text-red-700 mb-2">🚨 Wymaga natychmiastowej uwagi (Requires Immediate Action)</div>
+          {websiteBugs.length > 0 && <div className="text-red-600 text-sm mb-1">• {websiteBugs.length} produkty z błędami na stronie (brak przycisku zakupu / pre-order) — klienci NIE MOGĄ KUPIĆ</div>}
+          {openDisputes.length > 0 && <div className="text-red-600 text-sm">• {openDisputes.length} otwartych sporów kurierskich — łącznie {totalOvercharge.toFixed(2)} PLN nadpłaty</div>}
+        </div>
+      )}
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="stat-card">
+          <div className="text-3xl font-bold text-blue-900">{orders.length}</div>
+          <div className="text-gray-500 text-sm mt-1">Zamówienia (Orders)</div>
+          <div className="text-gray-400 text-xs">ostatnie 7 dni</div>
+        </div>
+        <div className="stat-card">
+          <div className="text-3xl font-bold text-red-600">{openDisputes.length}</div>
+          <div className="text-gray-500 text-sm mt-1">Otwarte Spory</div>
+          <div className="text-red-500 text-xs">{totalOvercharge.toFixed(2)} PLN nadpłaty</div>
+        </div>
+        <div className="stat-card">
+          <div className="text-3xl font-bold text-orange-500">{zeroStock.length}</div>
+          <div className="text-gray-500 text-sm mt-1">Brak Towaru (Zero Stock)</div>
+          <div className="text-orange-400 text-xs">wymaga reorder</div>
+        </div>
+        <div className="stat-card">
+          <div className="text-3xl font-bold text-green-600">{b2b.filter(b => b.status === "Active").length}</div>
+          <div className="text-gray-500 text-sm mt-1">Aktywni Klienci B2B</div>
+          <div className="text-green-500 text-xs">{b2b.filter(b => b.status === "Active").reduce((s, b) => s + b.monthly_spend, 0).toLocaleString()} PLN/mies.</div>
+        </div>
+      </div>
+
+      {/* Recent disputes */}
+      <div className="bg-white rounded-xl p-6 shadow-sm mb-6">
+        <h2 className="font-semibold text-gray-700 mb-4">Ostatnie Spory Kurierskie / Recent Disputes</h2>
+        <div className="space-y-2">
+          {orders.filter(o => o.dispute_status && o.dispute_status !== null).slice(0, 5).map(o => (
+            <div key={o.id} className={`rounded p-3 flex items-center justify-between ${o.dispute_status === "Open" ? "flag-red" : o.dispute_status === "Submitted" ? "flag-yellow" : "bg-gray-50"}`}>
+              <div>
+                <span className="font-mono text-sm font-semibold">{o.id}</span>
+                <span className="ml-3 text-gray-600 text-sm">{o.customer}</span>
+                <CourierBadge courier={o.courier} />
+              </div>
+              <div className="flex items-center gap-4">
+                {o.dispute_amount > 0 && <span className="text-red-600 font-bold text-sm">{o.dispute_amount.toFixed(2)} PLN</span>}
+                <StatusBadge status={o.dispute_status} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Website bugs */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <h2 className="font-semibold text-gray-700 mb-4">Błędy na Stronie / Website Bugs — Fix Today</h2>
+        <div className="space-y-2">
+          {websiteBugs.map(i => (
+            <div key={i.sku} className="flag-red rounded p-3">
+              <div className="font-semibold text-sm text-red-700">{i.name}</div>
+              <div className="text-xs text-red-600 mt-0.5">
+                {i.status === "PRE_ORDER_BUG" ? "⚠️ Wyświetla się jako PRE-ORDER — bestseller, nie można kupić" : "⚠️ Brak przycisku zakupu (Add to Cart) — sprawdź stan mag. w Shopify"}
+              </div>
+              {i.note && <div className="text-xs text-gray-500 mt-1">{i.note}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── ORDERS ────────────────────────────────────────────────────────────────────
+function Orders({ orders, setOrders }) {
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const filtered = orders.filter(o => {
+    const matchChannel = filter === "all" || o.channel === filter;
+    const matchSearch = !search || o.id.toLowerCase().includes(search.toLowerCase()) || o.customer.toLowerCase().includes(search.toLowerCase());
+    return matchChannel && matchSearch;
+  });
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Zamówienia / Orders</h1>
+      <div className="flex gap-3 mb-4 flex-wrap">
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Szukaj zamówienia / klienta..." className="w-64" />
+        {["all","Shopify","Allegro","Amazon","Etsy","B2B Direct"].map(c => (
+          <button key={c} onClick={() => setFilter(c)} className={`px-3 py-1.5 rounded text-sm border ${filter===c?"bg-blue-900 text-white border-blue-900":"bg-white text-gray-600 border-gray-200"}`}>{c}</button>
+        ))}
+      </div>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 text-gray-500 text-xs">
+            <tr>
+              <th className="text-left px-4 py-3">ID</th>
+              <th className="text-left px-4 py-3">Data</th>
+              <th className="text-left px-4 py-3">Klient</th>
+              <th className="text-left px-4 py-3">Kanał</th>
+              <th className="text-left px-4 py-3">Kurier</th>
+              <th className="text-left px-4 py-3">Status</th>
+              <th className="text-left px-4 py-3">Spór</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(o => (
+              <tr key={o.id} className={`table-row border-t ${o.dispute_status === "Open" ? "bg-red-50" : ""}`}>
+                <td className="px-4 py-3 font-mono font-semibold text-blue-700">{o.id}</td>
+                <td className="px-4 py-3 text-gray-500">{o.date}</td>
+                <td className="px-4 py-3 text-gray-700">{o.customer}</td>
+                <td className="px-4 py-3"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs">{o.channel}</span></td>
+                <td className="px-4 py-3"><CourierBadge courier={o.courier} /></td>
+                <td className="px-4 py-3 text-gray-600">{o.status}</td>
+                <td className="px-4 py-3"><StatusBadge status={o.dispute_status} />{o.dispute_amount > 0 && <span className="ml-2 text-red-500 text-xs font-bold">{o.dispute_amount} PLN</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ── DISPUTES ──────────────────────────────────────────────────────────────────
+function Disputes({ orders, setOrders }) {
+  const [selected, setSelected] = useState(null);
+  const [editing, setEditing] = useState(null);
+
+  const disputes = orders.filter(o => o.dispute_amount > 0 || o.dispute_status);
+
+  const openEdit = (o) => setEditing({ ...o });
+
+  const saveEdit = () => {
+    setOrders(orders.map(o => o.id === editing.id ? editing : o));
+    setEditing(null);
+  };
+
+  const isOvercharged = (o) => o.weight_billed > o.weight_declared;
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-2">Spory Kurierskie / Courier Disputes</h1>
+      <p className="text-gray-500 text-sm mb-6">Zarządzaj sporami z DPD, GLS, InPost i innymi. Wiersze czerwone = potwierdzona nadpłata.</p>
+
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        {["Open","Submitted","Won"].map(s => {
+          const count = disputes.filter(d => d.dispute_status === s).length;
+          const amt = disputes.filter(d => d.dispute_status === s).reduce((a,d) => a + (d.dispute_amount||0), 0);
+          return (
+            <div key={s} className="stat-card text-center">
+              <div className={`text-2xl font-bold ${s==="Open"?"text-red-600":s==="Submitted"?"text-yellow-600":"text-green-600"}`}>{count}</div>
+              <div className="text-sm text-gray-500">{s}</div>
+              {amt > 0 && <div className="text-xs text-gray-400">{amt.toFixed(2)} PLN</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 text-gray-500 text-xs">
+            <tr>
+              <th className="text-left px-4 py-3">Zamówienie</th>
+              <th className="text-left px-4 py-3">Klient</th>
+              <th className="text-left px-4 py-3">Kurier</th>
+              <th className="text-left px-4 py-3">Zadeklarowana waga</th>
+              <th className="text-left px-4 py-3">Naliczona waga</th>
+              <th className="text-left px-4 py-3">Różnica</th>
+              <th className="text-left px-4 py-3">Nadpłata</th>
+              <th className="text-left px-4 py-3">Status</th>
+              <th className="text-left px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {disputes.map(o => {
+              const diff = (o.weight_billed - o.weight_declared).toFixed(2);
+              const flagged = isOvercharged(o);
+              return (
+                <tr key={o.id} className={`table-row border-t ${flagged && o.dispute_status === "Open" ? "bg-red-50" : ""}`}>
+                  <td className="px-4 py-3 font-mono font-semibold text-blue-700">{o.id}</td>
+                  <td className="px-4 py-3 text-gray-600">{o.customer}</td>
+                  <td className="px-4 py-3"><CourierBadge courier={o.courier} /></td>
+                  <td className="px-4 py-3">{o.weight_declared} kg</td>
+                  <td className="px-4 py-3 font-semibold">{o.weight_billed} kg</td>
+                  <td className={`px-4 py-3 font-bold ${diff > 0 ? "text-red-600" : "text-green-600"}`}>{diff > 0 ? `+${diff}` : diff} kg {diff > 0 && "🚨"}</td>
+                  <td className="px-4 py-3 font-bold text-red-600">{o.dispute_amount > 0 ? `${o.dispute_amount.toFixed(2)} PLN` : "—"}</td>
+                  <td className="px-4 py-3"><StatusBadge status={o.dispute_status} /></td>
+                  <td className="px-4 py-3"><button onClick={() => openEdit(o)} className="btn-secondary text-xs py-1 px-2">Edytuj</button></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Edit modal */}
+      {editing && (
+        <div className="modal-overlay" onClick={() => setEditing(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2 className="text-lg font-bold text-gray-800 mb-4">Edytuj spór — {editing.id}</h2>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Waga zadeklarowana (kg)</label>
+                <input type="number" step="0.1" value={editing.weight_declared} onChange={e => setEditing({...editing, weight_declared: parseFloat(e.target.value)||0})} />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Waga naliczona (kg)</label>
+                <input type="number" step="0.1" value={editing.weight_billed} onChange={e => setEditing({...editing, weight_billed: parseFloat(e.target.value)||0})} />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Kwota nadpłaty (PLN)</label>
+                <input type="number" step="0.01" value={editing.dispute_amount} onChange={e => setEditing({...editing, dispute_amount: parseFloat(e.target.value)||0})} />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">Status sporu</label>
+                <select value={editing.dispute_status||""} onChange={e => setEditing({...editing, dispute_status: e.target.value||null})}>
+                  <option value="">Brak sporu</option>
+                  <option value="Open">Open — w toku</option>
+                  <option value="Submitted">Submitted — złożony</option>
+                  <option value="Won">Won — wygrany</option>
+                  <option value="Lost">Lost — przegrany</option>
+                </select>
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-xs text-gray-500 mb-1">Notatki / dowody</label>
+              <textarea rows={3} value={editing.notes} onChange={e => setEditing({...editing, notes: e.target.value})} className="resize-none" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-xs text-gray-500 mb-1">Wymiary zadeklarowane (DxSxW cm)</label>
+              <input value={editing.dims_declared} onChange={e => setEditing({...editing, dims_declared: e.target.value})} />
+            </div>
+            <div className="mb-6">
+              <label className="block text-xs text-gray-500 mb-1">Wymiary naliczone przez kuriera</label>
+              <input value={editing.dims_billed} onChange={e => setEditing({...editing, dims_billed: e.target.value})} />
+            </div>
+            <div className="bg-blue-50 rounded p-3 mb-4 text-xs text-blue-700">
+              <strong>Dowody do zgromadzenia:</strong> Zdjęcie paczki na wadze • Zdjęcie wymiarów (taśma miernicza) • Etykieta kurierska • Faktura kurierska (PDF) • Potwierdzenie zlecenia wysyłki
+            </div>
+            <div className="flex gap-3">
+              <button onClick={saveEdit} className="btn-primary">Zapisz zmiany</button>
+              <button onClick={() => setEditing(null)} className="btn-secondary">Anuluj</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── COURIER STATS ─────────────────────────────────────────────────────────────
+function CourierStats({ orders }) {
+  const couriers = ["DPD", "InPost", "GLS", "DHL", "UPS", "ORLEN Paczka"];
+  const stats = couriers.map(c => {
+    const co = orders.filter(o => o.courier === c);
+    const disputes = co.filter(o => o.dispute_amount > 0);
+    const won = co.filter(o => o.dispute_status === "Won");
+    const open = co.filter(o => o.dispute_status === "Open");
+    const totalOvercharge = disputes.reduce((s, o) => s + (o.dispute_amount || 0), 0);
+    return { courier: c, total: co.length, disputes: disputes.length, open: open.length, won: won.length, overcharge: totalOvercharge };
+  }).filter(s => s.total > 0);
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Statystyki Kurierów / Courier Performance</h1>
+      <div className="grid gap-4">
+        {stats.map(s => (
+          <div key={s.courier} className={`bg-white rounded-xl p-5 shadow-sm border-l-4 ${s.overcharge > 0 ? "border-red-400" : "border-green-400"}`}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <CourierBadge courier={s.courier} />
+                <span className="font-semibold text-gray-700 text-base">{s.courier}</span>
+              </div>
+              {s.overcharge > 0 && <span className="text-red-600 font-bold">{s.overcharge.toFixed(2)} PLN nadpłaty</span>}
+            </div>
+            <div className="grid grid-cols-4 gap-4 text-center">
+              <div><div className="text-xl font-bold text-gray-700">{s.total}</div><div className="text-xs text-gray-400">Przesyłki</div></div>
+              <div><div className={`text-xl font-bold ${s.disputes > 0 ? "text-red-500" : "text-green-500"}`}>{s.disputes}</div><div className="text-xs text-gray-400">Spory</div></div>
+              <div><div className={`text-xl font-bold ${s.open > 0 ? "text-red-500" : "text-gray-500"}`}>{s.open}</div><div className="text-xs text-gray-400">Otwarte</div></div>
+              <div><div className="text-xl font-bold text-green-600">{s.won}</div><div className="text-xs text-gray-400">Wygrane</div></div>
+            </div>
+            {s.disputes > 0 && (
+              <div className="mt-3 pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-500">Win rate: <span className="font-semibold">{s.disputes > 0 ? Math.round((s.won/s.disputes)*100) : 0}%</span> | Śr. nadpłata: <span className="font-semibold">{s.disputes > 0 ? (s.overcharge/s.disputes).toFixed(2) : 0} PLN/spór</span></div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-xl p-6 shadow-sm mt-6">
+        <h2 className="font-semibold text-gray-700 mb-3">Instrukcja zbierania dowodów / Evidence Collection Checklist</h2>
+        <div className="space-y-2 text-sm text-gray-600">
+          {["Przed wysyłką: zrób zdjęcie paczki na wadze (waga widoczna)","Przed wysyłką: zrób zdjęcie wymiarów taśmą mierniczą","Zachowaj PDF potwierdzenia zlecenia z wagą i wymiarami","Zachowaj etykietę kurierską (zdjęcie lub PDF)","Po otrzymaniu faktury: porównaj wagę zadeklarowaną vs naliczoną","Jeśli różnica > 0 kg — otwórz spór w systemie kuriera w ciągu 7 dni"].map((s,i) => (
+            <div key={i} className="flex items-start gap-2">
+              <span className="text-blue-600 font-bold mt-0.5">{i+1}.</span>
+              <span>{s}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── INVENTORY ─────────────────────────────────────────────────────────────────
+function Inventory({ inventory, setInventory }) {
+  const getStatusBadge = (i) => {
+    if (i.status === "PRE_ORDER_BUG") return <span className="px-2 py-0.5 rounded text-xs font-bold bg-red-600 text-white">🐛 PRE-ORDER BUG</span>;
+    if (i.status === "NO_BUY_BUTTON") return <span className="px-2 py-0.5 rounded text-xs font-bold bg-red-500 text-white">🐛 BRAK PRZYCISKU</span>;
+    if (i.status === "LOW_STOCK") return <span className="px-2 py-0.5 rounded text-xs font-bold bg-yellow-400 text-yellow-900">⚠️ NISKI STAN</span>;
+    return <span className="px-2 py-0.5 rounded text-xs bg-green-100 text-green-700">✅ OK</span>;
+  };
+
+  const sorted = [...inventory].sort((a,b) => b.units_sold_30d - a.units_sold_30d);
+
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Stany Magazynowe / Inventory</h1>
+
+      <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="stat-card"><div className="text-2xl font-bold text-red-600">{inventory.filter(i=>i.stock===0).length}</div><div className="text-sm text-gray-500">Brak towaru (0 szt.)</div></div>
+        <div className="stat-card"><div className="text-2xl font-bold text-yellow-500">{inventory.filter(i=>i.status==="LOW_STOCK").length}</div><div className="text-sm text-gray-500">Niski stan</div></div>
+        <div className="stat-card"><div className="text-2xl font-bold text-red-600">{inventory.filter(i=>i.status==="PRE_ORDER_BUG"||i.status==="NO_BUY_BUTTON").length}</div><div className="text-sm text-gray-500">Błędy strony www</div></div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 text-gray-500 text-xs">
+            <tr>
+              <th className="text-left px-4 py-3">SKU</th>
+              <th className="text-left px-4 py-3">Produkt</th>
+              <th className="text-left px-4 py-3">Kategoria</th>
+              <th className="text-left px-4 py-3">Stan</th>
+              <th className="text-left px-4 py-3">Min. reorder</th>
+              <th className="text-left px-4 py-3">Sprzedano 30d</th>
+              <th className="text-left px-4 py-3">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map(i => (
+              <tr key={i.sku} className={`table-row border-t ${i.stock===0?"bg-red-50":i.status==="LOW_STOCK"?"bg-yellow-50":""}`}>
+                <td className="px-4 py-3 font-mono text-xs text-gray-400">{i.sku}</td>
+                <td className="px-4 py-3 font-medium text-gray-700">{i.name}</td>
+                <td className="px-4 py-3 text-gray-500 text-xs">{i.category}</td>
+                <td className={`px-4 py-3 font-bold ${i.stock===0?"text-red-600":i.stock<i.reorder_point?"text-yellow-600":"text-green-600"}`}>{i.stock} szt.</td>
+                <td className="px-4 py-3 text-gray-400 text-xs">{i.reorder_point} szt.</td>
+                <td className="px-4 py-3 text-gray-600">{i.units_sold_30d} szt.</td>
+                <td className="px-4 py-3">
+                  {getStatusBadge(i)}
+                  {i.note && <div className="text-xs text-gray-400 mt-1 max-w-xs truncate" title={i.note}>{i.note}</div>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4 text-sm text-amber-800">
+        <strong>Ważne — China Lead Time:</strong> Standardowy czas dostawy z Chin: 50–70 dni. Punkt reorder = Śr. dzienna sprzedaż × 65 dni + zapas bezpieczeństwa. Excel: <code className="bg-amber-100 px-1 rounded">=1.65*STDEV(sprzedaż_90d)*SQRT(65)</code> &nbsp;|&nbsp; <strong>Chiński Nowy Rok 2027: 29 stycznia</strong> — zamów do 20 listopada 2026!
+      </div>
+    </div>
+  );
+}
+
+// ── B2B ───────────────────────────────────────────────────────────────────────
+function B2B({ b2b, setB2b }) {
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState({ company: "", contact: "", email: "", type: "Fashion School", city: "", status: "Prospect", monthly_spend: 0, notes: "" });
+
+  const addClient = () => {
+    if (!form.company) return;
+    setB2b([...b2b, { ...form, id: Date.now(), last_order: null, monthly_spend: Number(form.monthly_spend)||0 }]);
+    setAdding(false);
+    setForm({ company: "", contact: "", email: "", type: "Fashion School", city: "", status: "Prospect", monthly_spend: 0, notes: "" });
+  };
+
+  const totalMonthly = b2b.filter(b => b.status === "Active").reduce((s, b) => s + (b.monthly_spend||0), 0);
+
+  const statusColor = { Active: "bg-green-100 text-green-700", Pending: "bg-yellow-100 text-yellow-700", Prospect: "bg-blue-100 text-blue-700", Inactive: "bg-gray-100 text-gray-500" };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Klienci B2B</h1>
+          <p className="text-gray-400 text-sm mt-1">Hurtownicy, szkoły mody, firmy — aktywni: {totalMonthly.toLocaleString()} PLN/mies.</p>
+        </div>
+        <button onClick={() => setAdding(true)} className="btn-primary">+ Dodaj klienta</button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="stat-card"><div className="text-2xl font-bold text-green-600">{b2b.filter(b=>b.status==="Active").length}</div><div className="text-sm text-gray-500">Aktywni klienci</div><div className="text-xs text-green-500">{totalMonthly.toLocaleString()} PLN/mies.</div></div>
+        <div className="stat-card"><div className="text-2xl font-bold text-blue-500">{b2b.filter(b=>b.status==="Prospect").length}</div><div className="text-sm text-gray-500">Potencjalni (Prospects)</div><div className="text-xs text-blue-400">do skontaktowania</div></div>
+      </div>
+
+      <div className="space-y-3">
+        {b2b.map(c => (
+          <div key={c.id} className="bg-white rounded-xl p-5 shadow-sm">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-semibold text-gray-800">{c.company}</div>
+                <div className="text-gray-500 text-sm">{c.contact} | {c.email} | {c.city}</div>
+              </div>
+              <div className="flex items-center gap-3">
+                {c.monthly_spend > 0 && <span className="text-green-600 font-bold text-sm">{c.monthly_spend.toLocaleString()} PLN/mies.</span>}
+                <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusColor[c.status]||"bg-gray-100"}`}>{c.status}</span>
+                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs">{c.type}</span>
+              </div>
+            </div>
+            {c.notes && <div className="mt-2 text-sm text-gray-500 bg-gray-50 rounded p-2">{c.notes}</div>}
+            {c.last_order && <div className="mt-1 text-xs text-gray-400">Ostatnie zamówienie: {c.last_order}</div>}
+          </div>
+        ))}
+      </div>
+
+      {adding && (
+        <div className="modal-overlay" onClick={() => setAdding(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2 className="text-lg font-bold text-gray-800 mb-4">Dodaj klienta B2B</h2>
+            <div className="space-y-3">
+              {[["Nazwa firmy *", "company", "text"], ["Osoba kontaktowa", "contact", "text"], ["E-mail", "email", "email"], ["Miasto", "city", "text"]].map(([lbl, key, type]) => (
+                <div key={key}><label className="block text-xs text-gray-500 mb-1">{lbl}</label><input type={type} value={form[key]} onChange={e => setForm({...form, [key]: e.target.value})} /></div>
+              ))}
+              <div className="grid grid-cols-2 gap-3">
+                <div><label className="block text-xs text-gray-500 mb-1">Typ klienta</label>
+                  <select value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
+                    {["Fashion School","Medical / Scrubs","Army / Military","Furniture / Upholstery","Fashion Brand","Events / Film","Industrial","Workwear","Other"].map(t => <option key={t}>{t}</option>)}
+                  </select>
+                </div>
+                <div><label className="block text-xs text-gray-500 mb-1">Status</label>
+                  <select value={form.status} onChange={e => setForm({...form, status: e.target.value})}>
+                    {["Prospect","Pending","Active","Inactive"].map(s => <option key={s}>{s}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div><label className="block text-xs text-gray-500 mb-1">Śr. miesięczne zakupy (PLN)</label><input type="number" value={form.monthly_spend} onChange={e => setForm({...form, monthly_spend: e.target.value})} /></div>
+              <div><label className="block text-xs text-gray-500 mb-1">Notatki</label><textarea rows={2} className="resize-none" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} /></div>
+            </div>
+            <div className="flex gap-3 mt-4">
+              <button onClick={addClient} className="btn-primary">Dodaj</button>
+              <button onClick={() => setAdding(false)} className="btn-secondary">Anuluj</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── PACKAGE SIZES ─────────────────────────────────────────────────────────────
+function PackageSizes() {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800 mb-2">Rozmiary Opakowań / Package Size Reference</h1>
+      <p className="text-sm text-gray-500 mb-6">Notatki od Furkana — użyj prawidłowego rozmiaru przy każdej przesyłce, aby uniknąć sporów z kurierami.</p>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50 text-gray-500 text-xs">
+            <tr>
+              <th className="text-left px-5 py-3">Typ opakowania</th>
+              <th className="text-left px-5 py-3">Wymiary (cm)</th>
+              <th className="text-left px-5 py-3">Waga (kg)</th>
+              <th className="text-left px-5 py-3">Tkaniny / zastosowanie</th>
+            </tr>
+          </thead>
+          <tbody>
+            {PACKAGE_SIZES.map((p, i) => (
+              <tr key={i} className="table-row border-t">
+                <td className="px-5 py-3 font-semibold text-blue-800">{p.type}</td>
+                <td className="px-5 py-3 font-mono text-gray-600">{p.dims}</td>
+                <td className="px-5 py-3 text-gray-600">{p.weight}</td>
+                <td className="px-5 py-3 text-gray-500">{p.fabrics}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 text-sm text-blue-800">
+        <strong>Zasada:</strong> Zawsze zadeklaruj dokładny rozmiar i wagę przy zamawianiu kuriera. Każde odstępstwo = ryzyko nadpłaty. Przy wątpliwościach — zaokrąglij W GÓRĘ, nigdy w dół.
+        <br/><br/>
+        <strong>Kurierzy dostępni w Polsce:</strong> DPD (kolor czerwony) • InPost (paczkomaty — żółty) • GLS (niebieski) • DHL (żółto-czerwony) • UPS (brązowy) • ORLEN Paczka (zielony)
+        <br/><br/>
+        <strong>Zablokowany kurierzy (Furkan):</strong> GLS — tymczasowo zablokowany z powodu sporów
+      </div>
+    </div>
+  );
+}
+
+// ── APP ROOT ──────────────────────────────────────────────────────────────────
+function App() {
+  const [tab, setTab] = useState("dashboard");
+  const [orders, setOrders] = useLocalStorage("tw_orders", INITIAL_ORDERS);
+  const [inventory, setInventory] = useLocalStorage("tw_inventory", INITIAL_INVENTORY);
+  const [b2b, setB2b] = useLocalStorage("tw_b2b", INITIAL_B2B);
+
+  const renderTab = () => {
+    switch (tab) {
+      case "dashboard": return <Dashboard orders={orders} inventory={inventory} b2b={b2b} />;
+      case "orders": return <Orders orders={orders} setOrders={setOrders} />;
+      case "disputes": return <Disputes orders={orders} setOrders={setOrders} />;
+      case "couriers": return <CourierStats orders={orders} />;
+      case "inventory": return <Inventory inventory={inventory} setInventory={setInventory} />;
+      case "b2b": return <B2B b2b={b2b} setB2b={setB2b} />;
+      case "packages": return <PackageSizes />;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="flex">
+      <Sidebar active={tab} setActive={setTab} />
+      <div className="main p-8 overflow-y-auto">
+        <div className="max-w-5xl mx-auto">
+          {renderTab()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
