@@ -9,7 +9,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  body { font-family: 'Segoe UI', Arial, sans-serif; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
   .nav-item { transition: background 0.15s; }
   .nav-item:hover { background: rgba(255,255,255,0.12); }
   .nav-item.active { background: rgba(255,255,255,0.2); border-left: 3px solid #C9A84C; }
@@ -51,7 +51,7 @@
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect, useCallback } = React;
+const { useState, useEffect, useCallback, useRef } = React;
 
 // ── INITIAL SAMPLE DATA ──────────────────────────────────────────────────────
 const INITIAL_ORDERS = [
@@ -106,9 +106,9 @@ const CHECKLIST_ITEMS = [
 ];
 
 const INITIAL_EVIDENCE = [
-  { id: "EV-001", courier: "DPD", order_id: "BL-10421", invoice_number: "DPD-INV-2026-4421", invoice_date: "2026-06-06", declared_weight: 1.8, billed_weight: 2.4, declared_dims: "30x20x5", billed_dims: "30x20x5", overcharge_amount: 4.20, status: "Open", evidence_checklist: CHECKLIST_ITEMS.map(item => ({ item, done: false })), notes: "0.6kg overcharge on BL-10421. Wiskoza + Szyfon package." },
-  { id: "EV-002", courier: "GLS", order_id: "BL-10420", invoice_number: "GLS-INV-2026-8877", invoice_date: "2026-06-06", declared_weight: 18.0, billed_weight: 24.5, declared_dims: "40x40x150", billed_dims: "50x50x150", overcharge_amount: 42.00, status: "Submitted", evidence_checklist: CHECKLIST_ITEMS.map((item, i) => ({ item, done: i < 4 })), notes: "6.5kg overcharge + wrong box size category. KSA school order. Submitted to GLS portal." },
-  { id: "EV-003", courier: "GLS", order_id: "BL-10415", invoice_number: "GLS-INV-2026-3344", invoice_date: "2026-06-03", declared_weight: 48.0, billed_weight: 62.0, declared_dims: "60x60x150", billed_dims: "60x60x150", overcharge_amount: 98.00, status: "Open", evidence_checklist: CHECKLIST_ITEMS.map((item, i) => ({ item, done: i === 0 })), notes: "14kg overcharge — army order. Preparing evidence package. Largest dispute." },
+  { id: "EV-001", courier: "DPD", order_id: "BL-10421", invoice_number: "DPD-INV-2026-4421", invoice_date: "2026-06-06", product_name: "Wiskoza Gładka Czarna 150cm + Szyfon Biały 150cm", quantity_m: 2.0, package_type: "Folio C", declared_weight: 1.8, billed_weight: 2.4, declared_dims: "30x20x5", billed_dims: "30x20x5", overcharge_amount: 4.20, status: "Open", photos: { scale: null, dims: null, label: null, invoice: null }, evidence_checklist: CHECKLIST_ITEMS.map(item => ({ item, done: false })), notes: "0.6kg overcharge on BL-10421. Wiskoza + Szyfon package." },
+  { id: "EV-002", courier: "GLS", order_id: "BL-10420", invoice_number: "GLS-INV-2026-8877", invoice_date: "2026-06-06", product_name: "Dzianina Jersey Granatowa 150cm + Bawełna Biała 150cm", quantity_m: 30.0, package_type: "Rola 40×40×150", declared_weight: 18.0, billed_weight: 24.5, declared_dims: "40x40x150", billed_dims: "50x50x150", overcharge_amount: 42.00, status: "Submitted", photos: { scale: null, dims: null, label: null, invoice: null }, evidence_checklist: CHECKLIST_ITEMS.map((item, i) => ({ item, done: i < 4 })), notes: "6.5kg overcharge + wrong box size category. KSA school order. Submitted to GLS portal." },
+  { id: "EV-003", courier: "GLS", order_id: "BL-10415", invoice_number: "GLS-INV-2026-3344", invoice_date: "2026-06-03", product_name: "Tkanina Techniczna Khaki 150cm + Polar Wojskowy 150cm", quantity_m: 150.0, package_type: "Rola 60×60×150", declared_weight: 48.0, billed_weight: 62.0, declared_dims: "60x60x150", billed_dims: "60x60x150", overcharge_amount: 98.00, status: "Open", photos: { scale: null, dims: null, label: null, invoice: null }, evidence_checklist: CHECKLIST_ITEMS.map((item, i) => ({ item, done: i === 0 })), notes: "14kg overcharge — army order. Preparing evidence package. Largest dispute." },
 ];
 
 const INITIAL_WEBSITE_ISSUES = [
@@ -682,120 +682,270 @@ function PackageSizes() {
   );
 }
 
+// ── PHOTO SLOT ────────────────────────────────────────────────────────────────
+function PhotoSlot({ label, icon, photo, onUpload, onRemove }) {
+  const inputRef = useRef();
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const img = new window.Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const maxSize = 900;
+      let w = img.width, h = img.height;
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      onUpload(canvas.toDataURL('image/jpeg', 0.72));
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+    e.target.value = "";
+  };
+
+  return (
+    <div className="border-2 border-dashed rounded-xl overflow-hidden" style={{borderColor: photo ? '#16A34A' : '#D1D5DB', background: photo ? '#F0FDF4' : '#F9FAFB'}}>
+      {photo ? (
+        <div className="relative">
+          <img src={photo} alt={label} className="w-full object-cover rounded-t-xl" style={{height: '120px', objectFit: 'cover'}} />
+          <div className="px-3 py-2 flex items-center justify-between">
+            <span className="text-xs font-semibold text-green-700">✓ {label}</span>
+            <button onClick={onRemove} className="text-xs text-red-500 hover:text-red-700">✕ Usuń</button>
+          </div>
+        </div>
+      ) : (
+        <button onClick={() => inputRef.current.click()} className="w-full flex flex-col items-center justify-center gap-1 py-4 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors">
+          <span className="text-2xl">{icon}</span>
+          <span className="text-xs font-medium">{label}</span>
+          <span className="text-xs text-gray-300">Kliknij aby dodać</span>
+        </button>
+      )}
+      <input ref={inputRef} type="file" accept="image/*,application/pdf" onChange={handleFile} style={{display:'none'}} />
+    </div>
+  );
+}
+
 // ── EVIDENCE & INVOICE COMPARISON ─────────────────────────────────────────────
 function Evidence({ evidence, setEvidence }) {
   const [selected, setSelected] = useState(null);
   const [summary, setSummary] = useState(null);
+  const [adding, setAdding] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const blankForm = { courier: "DPD", order_id: "", invoice_number: "", invoice_date: new Date().toISOString().slice(0,10), product_name: "", quantity_m: 0, package_type: "Folio C", declared_weight: 0, billed_weight: 0, declared_dims: "", billed_dims: "", overcharge_amount: 0, status: "Open", notes: "" };
+  const [form, setForm] = useState(blankForm);
 
-  const toggleCheck = (evId, itemIdx) => {
-    setEvidence(evidence.map(e => {
-      if (e.id !== evId) return e;
-      const cl = e.evidence_checklist.map((c, i) => i === itemIdx ? { ...c, done: !c.done } : c);
-      return { ...e, evidence_checklist: cl };
-    }));
-    if (selected && selected.id === evId) {
-      setSelected(prev => {
-        const cl = prev.evidence_checklist.map((c, i) => i === itemIdx ? { ...c, done: !c.done } : c);
-        return { ...prev, evidence_checklist: cl };
-      });
-    }
+  const updateEvidence = (id, changes) => {
+    const updated = evidence.map(e => e.id === id ? { ...e, ...changes } : e);
+    setEvidence(updated);
+    if (selected && selected.id === id) setSelected(prev => ({ ...prev, ...changes }));
   };
 
+  const toggleCheck = (evId, itemIdx) => {
+    const ev = evidence.find(e => e.id === evId);
+    if (!ev) return;
+    const cl = ev.evidence_checklist.map((c, i) => i === itemIdx ? { ...c, done: !c.done } : c);
+    updateEvidence(evId, { evidence_checklist: cl });
+  };
+
+  const uploadPhoto = (evId, slot, base64) => updateEvidence(evId, { photos: { ...(evidence.find(e=>e.id===evId).photos||{}), [slot]: base64 } });
+  const removePhoto = (evId, slot) => updateEvidence(evId, { photos: { ...(evidence.find(e=>e.id===evId).photos||{}), [slot]: null } });
+
   const generateSummary = (ev) => {
-    const done = ev.evidence_checklist.filter(c => c.done).map(c => `  - [x] ${c.item}`).join("\n");
-    const notDone = ev.evidence_checklist.filter(c => !c.done).map(c => `  - [ ] ${c.item}`).join("\n");
-    const text = `DISPUTE EVIDENCE SUMMARY
-========================
-Evidence ID: ${ev.id}
-Courier: ${ev.courier}
-Order ID: ${ev.order_id}
-Invoice Number: ${ev.invoice_number}
-Invoice Date: ${ev.invoice_date}
+    const done = ev.evidence_checklist.filter(c => c.done).map(c => `  ✓ ${c.item}`).join("\n");
+    const notDone = ev.evidence_checklist.filter(c => !c.done).map(c => `  ☐ ${c.item}`).join("\n");
+    const weightMismatch = ev.billed_weight !== ev.declared_weight;
+    const dimsMismatch = ev.billed_dims !== ev.declared_dims;
+    setSummary(`DISPUTE EVIDENCE SUMMARY — TextilWorld
+========================================
+Evidence ID : ${ev.id}
+Courier     : ${ev.courier}
+Order ID    : ${ev.order_id}
+Invoice No. : ${ev.invoice_number}  (${ev.invoice_date})
 
-WEIGHT DISCREPANCY:
-  Declared weight: ${ev.declared_weight} kg
-  Billed weight:   ${ev.billed_weight} kg
-  Difference:      +${(ev.billed_weight - ev.declared_weight).toFixed(2)} kg
-  Overcharge:      ${ev.overcharge_amount.toFixed(2)} PLN
+PRODUCT DETAILS:
+  Product     : ${ev.product_name}
+  Quantity    : ${ev.quantity_m} m
+  Package type: ${ev.package_type}
 
-DIMENSIONS:
-  Declared: ${ev.declared_dims} cm
-  Billed:   ${ev.billed_dims} cm
+WEIGHT ${weightMismatch ? "⚠ MISMATCH" : "✓ MATCH"}:
+  Declared : ${ev.declared_weight} kg
+  Billed   : ${ev.billed_weight} kg
+  Diff     : ${weightMismatch ? `+${(ev.billed_weight-ev.declared_weight).toFixed(2)} kg OVERCHARGE` : "none"}
 
-STATUS: ${ev.status}
+DIMENSIONS ${dimsMismatch ? "⚠ MISMATCH" : "✓ MATCH"}:
+  Declared : ${ev.declared_dims} cm
+  Billed   : ${ev.billed_dims} cm
 
-EVIDENCE COLLECTED:
-${done || "  (none yet)"}
+OVERCHARGE: ${ev.overcharge_amount.toFixed(2)} PLN
+STATUS    : ${ev.status}
+
+PHOTOS UPLOADED:
+  Scale photo    : ${ev.photos?.scale ? "✓ YES" : "✗ MISSING"}
+  Dims photo     : ${ev.photos?.dims ? "✓ YES" : "✗ MISSING"}
+  Label photo    : ${ev.photos?.label ? "✓ YES" : "✗ MISSING"}
+  Invoice scan   : ${ev.photos?.invoice ? "✓ YES" : "✗ MISSING"}
+
+EVIDENCE CHECKLIST:
+${done || "  (none completed)"}
 
 STILL NEEDED:
-${notDone || "  (all collected)"}
+${notDone || "  (all done)"}
 
 NOTES:
 ${ev.notes || "(none)"}
 
-Generated: ${new Date().toLocaleString("pl-PL")}`;
-    setSummary(text);
+Generated: ${new Date().toLocaleString("pl-PL")}`);
+  };
+
+  const saveForm = () => {
+    if (!form.order_id) return;
+    if (editId) {
+      updateEvidence(editId, { ...form, overcharge_amount: parseFloat(form.overcharge_amount)||0, declared_weight: parseFloat(form.declared_weight)||0, billed_weight: parseFloat(form.billed_weight)||0, quantity_m: parseFloat(form.quantity_m)||0 });
+      setEditId(null);
+    } else {
+      const newEv = { ...form, id: `EV-${String(evidence.length+1).padStart(3,"0")}`, overcharge_amount: parseFloat(form.overcharge_amount)||0, declared_weight: parseFloat(form.declared_weight)||0, billed_weight: parseFloat(form.billed_weight)||0, quantity_m: parseFloat(form.quantity_m)||0, photos: { scale: null, dims: null, label: null, invoice: null }, evidence_checklist: CHECKLIST_ITEMS.map(item => ({ item, done: false })) };
+      setEvidence([...evidence, newEv]);
+    }
+    setAdding(false);
+    setForm(blankForm);
+  };
+
+  const startEdit = (ev) => {
+    setForm({ courier: ev.courier, order_id: ev.order_id, invoice_number: ev.invoice_number, invoice_date: ev.invoice_date, product_name: ev.product_name||"", quantity_m: ev.quantity_m||0, package_type: ev.package_type||"Folio C", declared_weight: ev.declared_weight, billed_weight: ev.billed_weight, declared_dims: ev.declared_dims, billed_dims: ev.billed_dims, overcharge_amount: ev.overcharge_amount, status: ev.status, notes: ev.notes||"" });
+    setEditId(ev.id);
+    setAdding(true);
   };
 
   const totalOvercharge = evidence.reduce((s, e) => s + e.overcharge_amount, 0);
-  const openCount = evidence.filter(e => e.status === "Open").length;
+  const photosUploaded = (ev) => Object.values(ev.photos||{}).filter(Boolean).length;
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">Faktury / Evidence & Invoice Comparison</h1>
-      <p className="text-gray-500 text-sm mb-6">Porównanie faktur kurierskich z zadeklarowanymi wagami. Czerwone = otwarta nadpłata.</p>
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Faktury / Evidence & Mismatch Detector</h1>
+          <p className="text-gray-500 text-sm mt-1">Prześlij fakturę i zdjęcia — automatyczne wykrycie niezgodności z DPD, GLS, DHL.</p>
+        </div>
+        <button onClick={() => { setEditId(null); setForm(blankForm); setAdding(true); }} className="btn-primary">+ Nowy spór</button>
+      </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="stat-card text-center"><div className="text-2xl font-bold text-red-600">{openCount}</div><div className="text-sm text-gray-500">Otwarte spory</div></div>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="stat-card text-center"><div className="text-2xl font-bold text-red-600">{evidence.filter(e=>e.status==="Open").length}</div><div className="text-sm text-gray-500">Open</div></div>
         <div className="stat-card text-center"><div className="text-2xl font-bold text-yellow-600">{evidence.filter(e=>e.status==="Submitted").length}</div><div className="text-sm text-gray-500">Submitted</div></div>
+        <div className="stat-card text-center"><div className="text-2xl font-bold text-green-600">{evidence.filter(e=>e.status==="Won").length}</div><div className="text-sm text-gray-500">Won</div></div>
         <div className="stat-card text-center"><div className="text-2xl font-bold text-red-700">{totalOvercharge.toFixed(2)} PLN</div><div className="text-sm text-gray-500">Łączna nadpłata</div></div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-gray-500 text-xs">
-            <tr>
-              <th className="text-left px-4 py-3">ID</th>
-              <th className="text-left px-4 py-3">Kurier</th>
-              <th className="text-left px-4 py-3">Zamówienie</th>
-              <th className="text-left px-4 py-3">Nr faktury</th>
-              <th className="text-left px-4 py-3">Waga dekl.</th>
-              <th className="text-left px-4 py-3">Waga fakt.</th>
-              <th className="text-left px-4 py-3">Nadpłata</th>
-              <th className="text-left px-4 py-3">Checklist</th>
-              <th className="text-left px-4 py-3">Status</th>
-              <th className="text-left px-4 py-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {evidence.map(ev => {
-              const doneCount = ev.evidence_checklist.filter(c => c.done).length;
-              const total = ev.evidence_checklist.length;
-              const isRedRow = ev.overcharge_amount > 0 && ev.status === "Open";
-              return (
-                <tr key={ev.id} className={`table-row border-t cursor-pointer ${isRedRow ? "bg-red-50" : ""}`} onClick={() => setSelected(selected && selected.id === ev.id ? null : ev)}>
-                  <td className="px-4 py-3 font-mono text-xs font-bold text-blue-700">{ev.id}</td>
-                  <td className="px-4 py-3"><CourierBadge courier={ev.courier} /></td>
-                  <td className="px-4 py-3 font-mono text-xs text-gray-600">{ev.order_id}</td>
-                  <td className="px-4 py-3 text-xs text-gray-500">{ev.invoice_number}</td>
-                  <td className="px-4 py-3">{ev.declared_weight} kg</td>
-                  <td className="px-4 py-3 font-semibold text-red-600">{ev.billed_weight} kg</td>
-                  <td className="px-4 py-3 font-bold text-red-600">{ev.overcharge_amount.toFixed(2)} PLN</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <div className="w-20 bg-gray-200 rounded-full h-2">
-                        <div className="bg-green-500 h-2 rounded-full" style={{width: `${(doneCount/total)*100}%`}}></div>
-                      </div>
-                      <span className="text-xs text-gray-500">{doneCount}/{total}</span>
+      <div className="space-y-4 mb-6">
+        {evidence.map(ev => {
+          const weightMismatch = ev.billed_weight > ev.declared_weight;
+          const dimsMismatch = ev.billed_dims !== ev.declared_dims;
+          const anyMismatch = weightMismatch || dimsMismatch;
+          const doneCount = ev.evidence_checklist.filter(c => c.done).length;
+          const total = ev.evidence_checklist.length;
+          const photos = ev.photos || {};
+          const photoCount = photosUploaded(ev);
+          const isOpen = selected && selected.id === ev.id;
+
+          return (
+            <div key={ev.id} className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 ${ev.status==="Open"?"border-red-500":ev.status==="Submitted"?"border-yellow-500":"border-green-500"}`}>
+              {/* Card header — always visible */}
+              <div className="px-5 py-4 cursor-pointer" onClick={() => setSelected(isOpen ? null : ev)}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <span className="font-mono font-bold text-blue-700 text-sm">{ev.id}</span>
+                      <CourierBadge courier={ev.courier} />
+                      <span className="font-mono text-xs text-gray-500">{ev.order_id}</span>
+                      <StatusBadge status={ev.status} />
                     </div>
-                  </td>
-                  <td className="px-4 py-3"><StatusBadge status={ev.status} /></td>
-                  <td className="px-4 py-3 text-xs text-blue-600">{selected && selected.id === ev.id ? "▲ Zamknij" : "▼ Szczegóły"}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    <div className="font-semibold text-gray-800 text-sm">{ev.product_name || "—"}</div>
+                    <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                      <span>📦 {ev.package_type}</span>
+                      <span>📏 {ev.quantity_m}m tkaniny</span>
+                      <span>Faktura: {ev.invoice_number}</span>
+                    </div>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <div className="flex items-center gap-3 justify-end mb-1">
+                      {anyMismatch && <span className="px-2 py-0.5 rounded text-xs font-bold bg-red-100 text-red-700">⚠ NIEZGODNOŚĆ</span>}
+                      <span className="text-red-600 font-bold text-sm">{ev.overcharge_amount > 0 ? `${ev.overcharge_amount.toFixed(2)} PLN` : "—"}</span>
+                    </div>
+                    <div className="text-xs text-gray-400">{photoCount}/4 zdjęć | checklist {doneCount}/{total}</div>
+                    <div className="text-xs text-blue-500 mt-1">{isOpen ? "▲ Zamknij" : "▼ Otwórz szczegóły"}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Expanded detail */}
+              {isOpen && (
+                <div className="border-t border-gray-100 px-5 py-5">
+
+                  {/* Mismatch comparison */}
+                  <div className="grid grid-cols-2 gap-4 mb-5">
+                    <div className="rounded-xl p-4 bg-green-50 border border-green-200">
+                      <div className="text-xs font-bold text-green-600 uppercase mb-2">✓ Zadeklarowane przez nas</div>
+                      <div className="text-2xl font-bold text-green-800">{ev.declared_weight} kg</div>
+                      <div className="text-sm text-green-700 mt-1">Wymiary: <span className="font-mono font-semibold">{ev.declared_dims} cm</span></div>
+                      <div className="text-xs text-green-600 mt-1">Typ: {ev.package_type}</div>
+                    </div>
+                    <div className={`rounded-xl p-4 border ${anyMismatch ? "bg-red-50 border-red-300" : "bg-gray-50 border-gray-200"}`}>
+                      <div className={`text-xs font-bold uppercase mb-2 ${anyMismatch ? "text-red-600" : "text-gray-500"}`}>{anyMismatch ? "⚠ Naliczone przez kuriera" : "✓ Naliczone przez kuriera"}</div>
+                      <div className={`text-2xl font-bold ${anyMismatch ? "text-red-700" : "text-gray-700"}`}>{ev.billed_weight} kg</div>
+                      <div className={`text-sm mt-1 ${dimsMismatch ? "text-red-700 font-semibold" : "text-gray-600"}`}>Wymiary: <span className="font-mono font-semibold">{ev.billed_dims} cm</span>{dimsMismatch && " ⚠"}</div>
+                      {weightMismatch && <div className="text-sm font-bold text-red-700 mt-1">+{(ev.billed_weight-ev.declared_weight).toFixed(2)} kg nadpłata = {ev.overcharge_amount.toFixed(2)} PLN</div>}
+                    </div>
+                  </div>
+
+                  {/* Photo upload slots */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-semibold text-gray-700 text-sm">Zdjęcia dowodowe ({photoCount}/4)</h3>
+                      <div className="w-24 bg-gray-200 rounded-full h-1.5">
+                        <div className="bg-green-500 h-1.5 rounded-full transition-all" style={{width:`${(photoCount/4)*100}%`}}></div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-4 gap-3">
+                      <PhotoSlot label="Paczka na wadze" icon="⚖️" photo={photos.scale} onUpload={b => uploadPhoto(ev.id,"scale",b)} onRemove={() => removePhoto(ev.id,"scale")} />
+                      <PhotoSlot label="Wymiary taśmą" icon="📐" photo={photos.dims} onUpload={b => uploadPhoto(ev.id,"dims",b)} onRemove={() => removePhoto(ev.id,"dims")} />
+                      <PhotoSlot label="Etykieta kurierska" icon="🏷️" photo={photos.label} onUpload={b => uploadPhoto(ev.id,"label",b)} onRemove={() => removePhoto(ev.id,"label")} />
+                      <PhotoSlot label="Faktura kurierska" icon="🧾" photo={photos.invoice} onUpload={b => uploadPhoto(ev.id,"invoice",b)} onRemove={() => removePhoto(ev.id,"invoice")} />
+                    </div>
+                  </div>
+
+                  {/* Checklist */}
+                  <div className="mb-5">
+                    <h3 className="font-semibold text-gray-700 text-sm mb-2">Checklist dowodów ({doneCount}/{total})</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      {ev.evidence_checklist.map((c, i) => (
+                        <label key={i} className={`flex items-center gap-2 p-2.5 rounded-lg cursor-pointer transition-colors text-sm ${c.done ? "bg-green-50 border border-green-200 text-green-700" : "bg-gray-50 border border-gray-200 text-gray-600"}`}>
+                          <input type="checkbox" checked={c.done} onChange={() => toggleCheck(ev.id, i)} className="w-4 h-4 accent-green-600 flex-shrink-0" style={{width:"auto"}} />
+                          <span className={c.done ? "line-through" : ""}>{c.item}</span>
+                          {c.done && <span className="ml-auto text-green-600 text-xs">✓</span>}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {ev.notes && <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 mb-4"><strong>Notatki:</strong> {ev.notes}</div>}
+
+                  <div className="flex gap-3">
+                    <button onClick={() => generateSummary(ev)} className="btn-gold text-sm">📋 Generuj raport sporu</button>
+                    <button onClick={() => { updateEvidence(ev.id, { status: ev.status === "Open" ? "Submitted" : ev.status === "Submitted" ? "Won" : "Open" }); }} className="btn-secondary text-sm">
+                      {ev.status === "Open" ? "→ Oznacz jako Submitted" : ev.status === "Submitted" ? "→ Oznacz jako Won" : "↩ Reopen"}
+                    </button>
+                    <button onClick={() => startEdit(ev)} className="btn-secondary text-sm">✏️ Edytuj</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {selected && (
