@@ -1,0 +1,13 @@
+{
+  "id": "P010",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "Honestly €29.99 for five pairs is a better deal than my Happy Socks, and a knitted duck is cute. But I've never heard of them, and paying €4.99 to wait for 100 strangers to reserve with no delivery date is too much of a gamble on my budget. I'd rather spend that on Zalando, where it shows up this week.",
+  "objection": "Will this ever actually ship? There's no delivery date, no reviews, and I can't see the knit quality. 'Combed cotton' tells me nothing until I've held one.",
+  "would_change_my_mind": "A real delivery date plus close-up photos or reviews from people who've actually got the socks. Or the deposit fully refunded if they never hit 100.",
+  "price_too_cheap": 10,
+  "price_cheap": 20,
+  "price_expensive": 35,
+  "price_too_expensive": 45
+}

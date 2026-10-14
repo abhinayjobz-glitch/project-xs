@@ -1,0 +1,13 @@
+{
+  "id": "P004",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "timing",
+  "reason": "The duck socks are funny and €30 is nothing to me, but I buy on impulse, and that means I want it now. Paying €4.99 to reserve something that might never hit 100 reservations, with no delivery date, kills the buzz, so I'd scroll on and probably forget about it.",
+  "objection": "Why pay €4.99 just to reserve something with no date? I could be waiting months, or it might never get made, while Zalando gets me stuff in two days.",
+  "would_change_my_mind": "A real ship date, or buying it outright with normal delivery like any other shop, so I can check out in one tap and actually get it.",
+  "price_too_cheap": 10,
+  "price_cheap": 20,
+  "price_expensive": 35,
+  "price_too_expensive": 45
+}

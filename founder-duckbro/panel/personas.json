@@ -1,0 +1,222 @@
+[
+ {
+  "id": "P001",
+  "name": "Omar",
+  "age": 18,
+  "segment": "Established professional",
+  "income": 87000,
+  "behaviour": "Meme-humour fan",
+  "behaviour_how": "Buys things that are a joke you can wear; shares them online.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you scroll TikTok every evening"
+ },
+ {
+  "id": "P002",
+  "name": "Raj",
+  "age": 26,
+  "segment": "Established professional",
+  "income": 78000,
+  "behaviour": "Review-checker",
+  "behaviour_how": "Won't buy from a brand with no reviews, Trustpilot page or proof it ships.",
+  "objection": "I've never heard of this brand, will it actually ship?",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P003",
+  "name": "Emil",
+  "age": 35,
+  "segment": "Young professional",
+  "income": 43000,
+  "behaviour": "Sustainability-minded",
+  "behaviour_how": "Prefers made-to-order, recycled materials, small brands; distrusts greenwashing.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you do Secret Santa with friends every December"
+ },
+ {
+  "id": "P004",
+  "name": "Owen",
+  "age": 22,
+  "segment": "Established professional",
+  "income": 96000,
+  "behaviour": "TikTok/Instagram impulse buyer",
+  "behaviour_how": "Buys from ads and creators in the moment if checkout is easy.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you shop on Zalando and ASOS for most clothes"
+ },
+ {
+  "id": "P005",
+  "name": "Sana",
+  "age": 38,
+  "segment": "Young professional",
+  "income": 54000,
+  "behaviour": "Gift hunter",
+  "behaviour_how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time.",
+  "objection": "Pre-order? I want it now, not 'once 100 people reserve'",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P006",
+  "name": "Maya",
+  "age": 35,
+  "segment": "Student or first-job young adult",
+  "income": 17000,
+  "behaviour": "Meme-humour fan",
+  "behaviour_how": "Buys things that are a joke you can wear; shares them online.",
+  "objection": "Is the duck joke funny for more than a week?",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P007",
+  "name": "Selin",
+  "age": 21,
+  "segment": "Established professional",
+  "income": 87000,
+  "behaviour": "Bargain and discount-code hunter",
+  "behaviour_how": "Waits for codes, compares with Amazon, Primark or AliExpress versions.",
+  "objection": "Is the duck joke funny for more than a week?",
+  "habit": "you have a colleague's birthday coming up"
+ },
+ {
+  "id": "P008",
+  "name": "Ruby",
+  "age": 24,
+  "segment": "Student or first-job young adult",
+  "income": 10000,
+  "behaviour": "Fun-socks collector",
+  "behaviour_how": "Already owns many patterned socks from Happy Socks, Stance or similar and compares designs and quality.",
+  "objection": "I've never heard of this brand, will it actually ship?",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P009",
+  "name": "Nora",
+  "age": 23,
+  "segment": "Young professional",
+  "income": 34000,
+  "behaviour": "Meme-humour fan",
+  "behaviour_how": "Buys things that are a joke you can wear; shares them online.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you have a colleague's birthday coming up"
+ },
+ {
+  "id": "P010",
+  "name": "Fatima",
+  "age": 21,
+  "segment": "Student or first-job young adult",
+  "income": 9000,
+  "behaviour": "Fun-socks collector",
+  "behaviour_how": "Already owns many patterned socks from Happy Socks, Stance or similar and compares designs and quality.",
+  "objection": "I've never heard of this brand, will it actually ship?",
+  "habit": "you shop on Zalando and ASOS for most clothes"
+ },
+ {
+  "id": "P011",
+  "name": "Tariq",
+  "age": 21,
+  "segment": "Young professional",
+  "income": 63000,
+  "behaviour": "Gift hunter",
+  "behaviour_how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you have a colleague's birthday coming up"
+ },
+ {
+  "id": "P012",
+  "name": "Felix",
+  "age": 20,
+  "segment": "Student or first-job young adult",
+  "income": 27000,
+  "behaviour": "TikTok/Instagram impulse buyer",
+  "behaviour_how": "Buys from ads and creators in the moment if checkout is easy.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P013",
+  "name": "Zoe",
+  "age": 22,
+  "segment": "Established professional",
+  "income": 94000,
+  "behaviour": "Review-checker",
+  "behaviour_how": "Won't buy from a brand with no reviews, Trustpilot page or proof it ships.",
+  "objection": "€30 for socks is a lot when Primark has funny socks for €5",
+  "habit": "you shop on Zalando and ASOS for most clothes"
+ },
+ {
+  "id": "P014",
+  "name": "Dev",
+  "age": 29,
+  "segment": "Young professional",
+  "income": 47000,
+  "behaviour": "TikTok/Instagram impulse buyer",
+  "behaviour_how": "Buys from ads and creators in the moment if checkout is easy.",
+  "objection": "Pre-order? I want it now, not 'once 100 people reserve'",
+  "habit": "you already own a drawer of patterned socks"
+ },
+ {
+  "id": "P015",
+  "name": "Yusuf",
+  "age": 32,
+  "segment": "Young professional",
+  "income": 47000,
+  "behaviour": "Sustainability-minded",
+  "behaviour_how": "Prefers made-to-order, recycled materials, small brands; distrusts greenwashing.",
+  "objection": "€30 for socks is a lot when Primark has funny socks for €5",
+  "habit": "you have a colleague's birthday coming up"
+ },
+ {
+  "id": "P016",
+  "name": "Theo",
+  "age": 22,
+  "segment": "Student or first-job young adult",
+  "income": 11000,
+  "behaviour": "Gift hunter",
+  "behaviour_how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time.",
+  "objection": "€30 for socks is a lot when Primark has funny socks for €5",
+  "habit": "you follow a few small streetwear brands on Instagram"
+ },
+ {
+  "id": "P017",
+  "name": "Alma",
+  "age": 26,
+  "segment": "Student or first-job young adult",
+  "income": 19000,
+  "behaviour": "Gift hunter",
+  "behaviour_how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time.",
+  "objection": "There are no real reviews on the product pages",
+  "habit": "you scroll TikTok every evening"
+ },
+ {
+  "id": "P018",
+  "name": "Freya",
+  "age": 34,
+  "segment": "Young professional",
+  "income": 31000,
+  "behaviour": "Fun-socks collector",
+  "behaviour_how": "Already owns many patterned socks from Happy Socks, Stance or similar and compares designs and quality.",
+  "objection": "Why pay €4.99 just to reserve something?",
+  "habit": "you do Secret Santa with friends every December"
+ },
+ {
+  "id": "P019",
+  "name": "Harper",
+  "age": 22,
+  "segment": "Student or first-job young adult",
+  "income": 23000,
+  "behaviour": "Bargain and discount-code hunter",
+  "behaviour_how": "Waits for codes, compares with Amazon, Primark or AliExpress versions.",
+  "objection": "Pre-order? I want it now, not 'once 100 people reserve'",
+  "habit": "you shop on Zalando and ASOS for most clothes"
+ },
+ {
+  "id": "P020",
+  "name": "Emma",
+  "age": 27,
+  "segment": "Young professional",
+  "income": 64000,
+  "behaviour": "Gift hunter",
+  "behaviour_how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time.",
+  "objection": "Is it really better quality than the cheap knock-offs?",
+  "habit": "you have a colleague's birthday coming up"
+ }
+]

@@ -1,0 +1,38 @@
+{
+  "business": "duckbro (duckbro.store, humorous duck-themed socks, bags and accessories, pre-launch)",
+  "target": "Adults 18 to 38 in the EU and UK who shop online for humorous, meme-style fashion for themselves or as a gift",
+  "where": "EU and UK, online (Instagram, TikTok, the brand's own website)",
+  "currency": "€",
+  "age": [18, 38],
+  "segments": [
+    {"name": "Student or first-job young adult", "share": 0.35, "income": [9000, 30000]},
+    {"name": "Young professional", "share": 0.40, "income": [30000, 65000]},
+    {"name": "Established professional", "share": 0.25, "income": [65000, 110000]}
+  ],
+  "behaviours": [
+    {"name": "Gift hunter", "share": 0.22, "how": "Buys fun, low-risk presents for birthdays, Secret Santa and colleagues; cares about arriving on time."},
+    {"name": "Meme-humour fan", "share": 0.16, "how": "Buys things that are a joke you can wear; shares them online."},
+    {"name": "TikTok/Instagram impulse buyer", "share": 0.16, "how": "Buys from ads and creators in the moment if checkout is easy."},
+    {"name": "Fun-socks collector", "share": 0.12, "how": "Already owns many patterned socks from Happy Socks, Stance or similar and compares designs and quality."},
+    {"name": "Sustainability-minded", "share": 0.10, "how": "Prefers made-to-order, recycled materials, small brands; distrusts greenwashing."},
+    {"name": "Bargain and discount-code hunter", "share": 0.12, "how": "Waits for codes, compares with Amazon, Primark or AliExpress versions."},
+    {"name": "Review-checker", "share": 0.12, "how": "Won't buy from a brand with no reviews, Trustpilot page or proof it ships."}
+  ],
+  "objections": [
+    "Pre-order? I want it now, not 'once 100 people reserve'",
+    "I've never heard of this brand, will it actually ship?",
+    "€30 for socks is a lot when Primark has funny socks for €5",
+    "Is the duck joke funny for more than a week?",
+    "Why pay €4.99 just to reserve something?",
+    "There are no real reviews on the product pages",
+    "Is it really better quality than the cheap knock-offs?"
+  ],
+  "habits": [
+    "you have a colleague's birthday coming up",
+    "you scroll TikTok every evening",
+    "you do Secret Santa with friends every December",
+    "you already own a drawer of patterned socks",
+    "you shop on Zalando and ASOS for most clothes",
+    "you follow a few small streetwear brands on Instagram"
+  ]
+}

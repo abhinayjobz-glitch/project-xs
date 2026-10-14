@@ -1,0 +1,13 @@
+{
+  "id": "P008",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "I already have a drawer full of Happy Socks, and I'm not paying a brand I've never heard of to reserve socks that might never get made, with no delivery date at all. The duck is cute, but cute isn't enough to make me wait who knows how long.",
+  "objection": "Brand new, everything is pre-order, it only gets made once 100 people reserve, and there's no date. I'm worried my €4.99 just disappears, or I'm still waiting in three months.",
+  "would_change_my_mind": "A real ship date (or proof the 100 reservations are already reached) and some photos or reviews from people who actually got the socks and could vouch for the knit quality.",
+  "price_too_cheap": 12,
+  "price_cheap": 20,
+  "price_expensive": 32,
+  "price_too_expensive": 40
+}
