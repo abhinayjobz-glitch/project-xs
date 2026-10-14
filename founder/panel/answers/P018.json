@@ -1,0 +1,13 @@
+{
+  "id": "P018",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "When I need fabric for an order date I go back to the Allegro sellers who have already delivered on time for me. Nothing here tells me what is actually in stock or how fast it ships. A good price per metre doesn't help if the parcel arrives after my deadline.",
+  "objection": "I'm afraid I'd order the velour for a client job and find out after paying that it's on pre-order or out of stock, and then I've lost the days I needed.",
+  "would_change_my_mind": "Live stock numbers per colour plus a guaranteed next-day dispatch, ideally on an Allegro Smart listing, so I know it will be on my table on time.",
+  "price_too_cheap": 8,
+  "price_cheap": 12,
+  "price_expensive": 19,
+  "price_too_expensive": 25
+}

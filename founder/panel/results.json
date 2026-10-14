@@ -1,0 +1,160 @@
+{
+ "business": "TextilWorld (online fabric by the meter, Poland)",
+ "seed": 7,
+ "dealt": 20,
+ "answered": 20,
+ "skipped": [],
+ "buys": 2,
+ "passes": 18,
+ "buy_rate": 0.1,
+ "by_segment": [
+  [
+   "Small clothing-brand owner or home seamstress selling online",
+   6,
+   0.3333333333333333
+  ],
+  [
+   "Freelance event / decor / set decorator",
+   3,
+   0.0
+  ],
+  [
+   "Fashion or sewing student",
+   3,
+   0.0
+  ],
+  [
+   "Hobby sewer",
+   8,
+   0.0
+  ]
+ ],
+ "by_behaviour": [
+  [
+   "Collection bulk buyer",
+   3,
+   0.3333333333333333
+  ],
+  [
+   "Allegro price-comparer",
+   5,
+   0.2
+  ],
+  [
+   "Touch-first buyer",
+   3,
+   0.0
+  ],
+  [
+   "Loyal to one online shop",
+   3,
+   0.0
+  ],
+  [
+   "Deadline buyer",
+   2,
+   0.0
+  ],
+  [
+   "Colour perfectionist",
+   2,
+   0.0
+  ],
+  [
+   "Instagram/TikTok browser",
+   2,
+   0.0
+  ]
+ ],
+ "by_income": [
+  [
+   "$101,000 and up",
+   8,
+   0.25
+  ],
+  [
+   "under $53,000",
+   6,
+   0.0
+  ],
+  [
+   "$53,000 to $101,000",
+   6,
+   0.0
+  ]
+ ],
+ "why_not": [
+  [
+   "habit",
+   10,
+   [
+    "For sets and decor I need to feel the drape and see the colour under light before I commit to 20 metres, so I go to my local fabric shop first. I'd only look at an online shop like this if my shop ran out, and nothing here tells me it's better than what I already use.",
+    "I already have a fabric shop I trust and they know what I need, so I have no reason to gamble on a new one. 14.90 for black viscose is fine, but it isn't cheap enough to make me switch."
+   ],
+   [
+    "P001",
+    "P002"
+   ]
+  ],
+  [
+   "trust",
+   4,
+   [
+    "When I need fabric it's for a set order date, and nothing here tells me what's actually in stock or how fast it leaves the warehouse. I'm not going to bet a client deadline on a shop I don't know when my usual Allegro sellers show stock and Smart delivery up front.",
+    "I have a wedding job due next month and I can't gamble on a shop I don't know. Nothing here says they offer swatches or real daylight photos, or tells me what's actually in stock, so I'll stick with the supplier whose colours I already trust."
+   ],
+   [
+    "P003",
+    "P004"
+   ]
+  ],
+  [
+   "quality",
+   4,
+   [
+    "I buy plain black viscose at my local fabric shop, where I can hold it and see how it falls. I only order online when the shop doesn't have something, and plain black viscose isn't one of those things.",
+    "Nothing here stops my scroll: it's a price list with plain black viscose, not a creator draping it or showing it in a set. For decor I buy in bigger runs, and I'm not ordering 20 metres from a shop I've never seen fabric from."
+   ],
+   [
+    "P006",
+    "P007"
+   ]
+  ]
+ ],
+ "why_yes": [
+  [
+   "price",
+   2,
+   [
+    "14.90 for black viscose is a decent price, so if their Allegro listing comes up cheapest with Smart delivery I'd add it to the cart. I wouldn't go to their own website though, and I'm not loyal to them, I'm loyal to the cheapest offer that week.",
+    "At 14.90 a metre for black viscose, 20 metres is about 300 PLN, so the locker delivery stops mattering. That's a fair price, so I'd try one run's worth, probably through Allegro so I'm covered if the colour or weight is off."
+   ],
+   [
+    "P011",
+    "P014"
+   ]
+  ]
+ ],
+ "flip": [
+  "A cheap swatch/sample pack I could feel first, plus live stock numbers I can trust so I know the metres are actually in the warehouse and ship next day.",
+  "Cheap swatches or a sample pack sent to my InPost locker, so I can see and feel the real colour before ordering metres.",
+  "Seeing their Allegro listing with Smart delivery, the real number of metres in stock, and a clear 'cut and shipped same day if ordered by X' promise.",
+  "Cheap colour swatches sent within a couple of days, plus real stock numbers shown on the product page, so I know I can get the full length before the deadline.",
+  "Their Allegro listing coming up as the cheapest with Smart delivery and a clear next-day dispatch, then I'd just buy it without thinking about who the seller is.",
+  "If I could get a cheap sample swatch sent to my InPost locker first, or if my shop ran out of something I needed and they had it.",
+  "A cheap swatch or sample box I could touch first, or seeing a sewing creator I follow actually use their velour or satin in a video.",
+  "Cheap physical swatches or a sample card I can pick up from my InPost locker, plus a clear volume price for 10 m and up",
+  "A cheap swatch or sample pack so I can feel the fabrics first, plus clear in-stock status with next-day InPost delivery.",
+  "Cheap or free swatch samples posted quickly, or real daylight photos next to a colour reference, plus a bulk price per metre for 10 m and up.",
+  "Cheap sample swatches (or a sample box) sent to my InPost locker, plus daylight photos of the actual fabric and clear stock status on each product.",
+  "If my usual shop ran out of what I need and they had it, or a cheap swatch I could check before the wedding.",
+  "Seeing a sewing creator I follow make something gorgeous from their velour or viscose, with a link and a small discount code.",
+  "Being clearly the cheapest on Allegro with delivery included, i.e. Smart on their listings, or free locker delivery on their own site that beats the Allegro total.",
+  "Being the cheapest black viscose on Allegro with Smart free delivery and a seller rating above 99%, or a creator I follow on Instagram showing their fabric.",
+  "Live stock numbers per colour plus a guaranteed next-day dispatch, ideally on an Allegro Smart listing, so I know it will be on my table on time.",
+  "Cheap swatch samples or free InPost locker delivery on a small first order, so I could check the quality and colour without paying for shipping on top.",
+  "Their Allegro listing coming up cheapest with Smart free delivery and a guaranteed delivery date."
+ ],
+ "purchases_first_month_per_buyer": 1.0,
+ "price_answers": 20
+}

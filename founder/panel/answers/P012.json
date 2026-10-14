@@ -1,0 +1,13 @@
+{
+  "id": "P012",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "I don't know this shop and nothing here says I can get swatches or real daylight photos, so I'd stick with the sellers I already trust on Allegro. The price is fine, but I've wasted money before on colours that looked nothing like the screen.",
+  "objection": "The colour won't match what I see on screen, and I'll find out after it's already been cut to order. Then there's the worry that the one I want ends up out of stock or stuck on pre-order.",
+  "would_change_my_mind": "Cheap sample swatches (or a sample box) sent to my InPost locker, plus daylight photos of the actual fabric and clear stock status on each product.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 22,
+  "price_too_expensive": 30
+}

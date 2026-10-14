@@ -1,0 +1,13 @@
+{
+  "id": "P011",
+  "buys": true,
+  "purchases_first_month": 1,
+  "reason_code": "price",
+  "reason": "14.90 for black viscose is a decent price, so if their Allegro listing comes up cheapest with Smart delivery I'd add it to the cart. I wouldn't go to their own website though, and I'm not loyal to them, I'm loyal to the cheapest offer that week.",
+  "objection": "I need fabric for a specific batch on a specific evening. If it says available and then turns out to be out of stock, or stuck on pre-order, my whole week is gone. I don't know this shop, so I can't tell yet whether their stock numbers are real.",
+  "would_change_my_mind": "Smart free delivery on Allegro plus stock shown honestly and shipped the next day. A few on-time orders and I'd buy from them regularly instead of just once.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 18,
+  "price_too_expensive": 23
+}

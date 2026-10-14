@@ -1,0 +1,13 @@
+{
+  "id": "P019",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "habit",
+  "reason": "I already have a fabric shop I trust that knows what I like, and with a wedding dress project due next month I'm not going to gamble on a new shop's colours and quality. A list of fabrics and prices doesn't give me a reason to switch.",
+  "objection": "I can't feel the fabric or see the true colour, and for one or two metres the delivery will cost nearly as much as the fabric itself, so trying an unknown shop is all risk for me.",
+  "would_change_my_mind": "Cheap swatch samples or free InPost locker delivery on a small first order, so I could check the quality and colour without paying for shipping on top.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 19,
+  "price_too_expensive": 26
+}
