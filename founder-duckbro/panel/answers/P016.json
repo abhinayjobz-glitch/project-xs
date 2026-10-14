@@ -1,0 +1,13 @@
+{
+  "id": "P016",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "timing",
+  "reason": "I buy this kind of thing as a gift for a specific date, like a birthday or Secret Santa, and a pre-order that only gets made once 100 people reserve, with no delivery date, could easily show up after the party. Plus €30 for socks is a lot when Primark has funny ones for €5.",
+  "objection": "No delivery date. If I'm buying a gift I need to know it arrives on time, and I'm not paying a deposit to a brand nobody's heard of and then just waiting.",
+  "would_change_my_mind": "A guaranteed ship date before Christmas, and something cheaper like the €9.99 charm in stock and ready to ship now",
+  "price_too_cheap": 8,
+  "price_cheap": 14,
+  "price_expensive": 22,
+  "price_too_expensive": 30
+}

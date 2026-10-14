@@ -1,0 +1,13 @@
+{
+  "id": "P015",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "timing",
+  "reason": "I need a gift for a colleague's birthday soon, and a pre-order with no delivery date can't help with that. I do like the made-to-order idea, but for that I'd be paying now for socks that might never get made.",
+  "objection": "No delivery date at all. Plus '0 units landfilled' sounds like a slogan, not proof. It's plain combed cotton, nothing about organic or recycled yarn or who knits them, so I can't tell if the sustainability part is real or just marketing.",
+  "would_change_my_mind": "A firm delivery date before the birthday, plus actual details on materials and production: organic or recycled cotton, where it's made, and a counter showing how close each item is to 100 reservations.",
+  "price_too_cheap": 10,
+  "price_cheap": 18,
+  "price_expensive": 30,
+  "price_too_expensive": 40
+}

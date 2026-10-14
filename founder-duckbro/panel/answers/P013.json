@@ -1,0 +1,13 @@
+{
+  "id": "P013",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "It's a brand-new shop with no reviews, no Trustpilot and nothing shipped yet, and they want me to pay to reserve socks with no delivery date. I don't buy from places I can't check, and Zalando or ASOS already have funny socks I can get this week.",
+  "objection": "Paying a deposit for something that might never get made, with zero proof anyone has ever received an order from them.",
+  "would_change_my_mind": "A real Trustpilot page or a bunch of customer reviews and unboxing photos showing the socks actually ship and the quality holds up.",
+  "price_too_cheap": 8,
+  "price_cheap": 15,
+  "price_expensive": 25,
+  "price_too_expensive": 35
+}

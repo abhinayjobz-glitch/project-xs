@@ -1,0 +1,13 @@
+{
+  "id": "P012",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "timing",
+  "reason": "I'd totally tap on a funny duck sock ad, but the second I see 'pay €4.99 to reserve, no delivery date' I'm out. I buy stuff in the moment because I want it now, not to wait for 99 other people to sign up.",
+  "objection": "Why pay €4.99 just to reserve something that might never get made, with no idea when it shows up? I already have a drawer full of patterned socks, so I'm not waiting around for these.",
+  "would_change_my_mind": "If I could just buy the Quack Pack and have it at my door within a week, I'd probably grab it on impulse, maybe as a gift.",
+  "price_too_cheap": 9,
+  "price_cheap": 18,
+  "price_expensive": 27,
+  "price_too_expensive": 35
+}

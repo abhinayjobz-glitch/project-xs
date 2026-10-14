@@ -1,0 +1,13 @@
+{
+  "id": "P020",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "timing",
+  "reason": "The Quack Pack is honestly cute and a good colleague gift, but I need it for a birthday coming up and there is no delivery date, just 'once 100 reservations come in'. I'm not paying a deposit for a present that might show up after the party.",
+  "objection": "No delivery date at all, so it could arrive weeks after the birthday. And as a brand-new brand I can't tell if the socks are really better than the cheap duck socks on Amazon that would arrive in two days.",
+  "would_change_my_mind": "A firm 'ships by' date, or it being in stock and arriving within a week.",
+  "price_too_cheap": 10,
+  "price_cheap": 18,
+  "price_expensive": 30,
+  "price_too_expensive": 40
+}
