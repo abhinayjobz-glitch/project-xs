@@ -1,0 +1,13 @@
+{
+  "id": "P005",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "habit",
+  "reason": "I don't go to fabric shop websites, I search Allegro, sort by price with delivery and take the cheapest Smart offer. 14.90 for plain black viscose is okay but not the cheapest I usually find, so I'd probably never land on them.",
+  "objection": "I need fabric by a specific date for orders I'm making for Etsy and Vinted, and nothing here tells me when it would actually arrive or whether it's free delivery with Smart. Ordering off their own site means paying for shipping on a 1-2 metre order, which kills the price.",
+  "would_change_my_mind": "Their Allegro listing coming up as the cheapest with Smart delivery and a clear next-day dispatch, then I'd just buy it without thinking about who the seller is.",
+  "price_too_cheap": 7,
+  "price_cheap": 10.5,
+  "price_expensive": 16.5,
+  "price_too_expensive": 21
+}

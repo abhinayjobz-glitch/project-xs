@@ -1,0 +1,13 @@
+{
+  "id": "P001",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "habit",
+  "reason": "For sets and decor I need to feel the drape and see the colour under light before I commit to 20 metres, so I go to my local fabric shop first. I'd only look at an online shop like this if my shop ran out, and nothing here tells me it's better than what I already use.",
+  "objection": "I can't touch it, and when I'm on a deadline for an event I can't risk an item showing out of stock or stuck on pre-order, or a colour that looks different from the photo.",
+  "would_change_my_mind": "A cheap swatch/sample pack I could feel first, plus live stock numbers I can trust so I know the metres are actually in the warehouse and ship next day.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 19,
+  "price_too_expensive": 25
+}

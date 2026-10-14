@@ -1,0 +1,13 @@
+{
+  "id": "P009",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "habit",
+  "reason": "I buy fabric at my local shop where I can feel the drape before I cut into it. I'd only order online if the shop didn't have what I need, and a plain black viscose is something they always have.",
+  "objection": "I can't touch it, so I don't know how heavy or drapey the viscose really is. And if I need it for a project this week, what if it's out of stock or stuck on pre-order?",
+  "would_change_my_mind": "A cheap swatch or sample pack so I can feel the fabrics first, plus clear in-stock status with next-day InPost delivery.",
+  "price_too_cheap": 8,
+  "price_cheap": 12,
+  "price_expensive": 22,
+  "price_too_expensive": 30
+}

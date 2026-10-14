@@ -1,0 +1,103 @@
+{
+ "n": 20,
+ "seed": 7,
+ "customer": {
+  "business": "TextilWorld (online fabric by the meter, Poland)",
+  "target": "People in Poland who sew and buy fabric online by the meter: hobby sewers, small clothing-brand owners, fashion students and event decorators",
+  "where": "Poland, buying online (Shopify store or Allegro)",
+  "currency": "PLN ",
+  "age": [
+   19,
+   58
+  ],
+  "segments": [
+   {
+    "name": "Hobby sewer",
+    "share": 0.4,
+    "income": [
+     45000,
+     110000
+    ]
+   },
+   {
+    "name": "Small clothing-brand owner or home seamstress selling online",
+    "share": 0.3,
+    "income": [
+     50000,
+     160000
+    ]
+   },
+   {
+    "name": "Fashion or sewing student",
+    "share": 0.15,
+    "income": [
+     18000,
+     50000
+    ]
+   },
+   {
+    "name": "Freelance event / decor / set decorator",
+    "share": 0.15,
+    "income": [
+     55000,
+     150000
+    ]
+   }
+  ],
+  "behaviours": [
+   {
+    "name": "Allegro price-comparer",
+    "share": 0.22,
+    "how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery."
+   },
+   {
+    "name": "Touch-first buyer",
+    "share": 0.14,
+    "how": "Prefers a local fabric shop where she can feel the drape; buys online only when the shop doesn't have it."
+   },
+   {
+    "name": "Colour perfectionist",
+    "share": 0.12,
+    "how": "Has been burned by colours that looked different on screen; orders samples or asks for photos in daylight first."
+   },
+   {
+    "name": "Collection bulk buyer",
+    "share": 0.14,
+    "how": "Buys 10 to 30 metres at once for a small production run and watches the price per metre closely."
+   },
+   {
+    "name": "Deadline buyer",
+    "share": 0.12,
+    "how": "Needs the fabric for a specific event or order date; delivery speed and stock certainty matter more than price."
+   },
+   {
+    "name": "Instagram/TikTok browser",
+    "share": 0.12,
+    "how": "Discovers fabrics from sewing creators and buys on impulse when something looks beautiful."
+   },
+   {
+    "name": "Loyal to one online shop",
+    "share": 0.14,
+    "how": "Already has a favourite online fabric shop that knows her and rarely switches."
+   }
+  ],
+  "objections": [
+   "Delivery will cost almost as much as the fabric",
+   "The colour on screen never matches the real thing",
+   "It's probably cheaper on Allegro from someone else",
+   "I can't feel the quality or the weight before buying",
+   "What if it's out of stock or stuck on pre-order when I need it?",
+   "I don't know this shop, are they reliable?",
+   "I need it by a specific date"
+  ],
+  "habits": [
+   "you sew most evenings after work",
+   "you follow several sewing creators on Instagram",
+   "you buy most things online through Allegro with Smart delivery",
+   "you pick up parcels from an InPost locker near your home",
+   "you have a sewing project due for a friend's wedding next month",
+   "you sell what you make on Etsy and Vinted"
+  ]
+ },
+ "pitch": "TextilWorld (textilworld.pl): fabric sold by the metre, shipped from a warehouse near Warsaw.\nCut to order from 0.5 m, 150 cm wide: viscose, velvet/velour, chiffon, crepe, jersey knit, cotton, satin, muslin and more.\nExample prices: plain black viscose 14.90 PLN/m, navy jersey knit 12.50 PLN/m, Cuba velour 24.90 PLN/m.\nDelivery by InPost locker, DPD, DHL or ORLEN Paczka. Also sold on Allegro, Etsy and Amazon.de.\n(For the four price questions, answer for 1 metre of the plain black viscose.)"
+}

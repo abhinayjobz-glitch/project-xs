@@ -1,0 +1,222 @@
+[
+ {
+  "id": "P001",
+  "name": "Omar",
+  "age": 19,
+  "segment": "Freelance event / decor / set decorator",
+  "income": 101000,
+  "behaviour": "Touch-first buyer",
+  "behaviour_how": "Prefers a local fabric shop where she can feel the drape; buys online only when the shop doesn't have it.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you follow several sewing creators on Instagram"
+ },
+ {
+  "id": "P002",
+  "name": "Raj",
+  "age": 35,
+  "segment": "Fashion or sewing student",
+  "income": 27000,
+  "behaviour": "Loyal to one online shop",
+  "behaviour_how": "Already has a favourite online fabric shop that knows her and rarely switches.",
+  "objection": "The colour on screen never matches the real thing",
+  "habit": "you pick up parcels from an InPost locker near your home"
+ },
+ {
+  "id": "P003",
+  "name": "Emil",
+  "age": 53,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 91000,
+  "behaviour": "Deadline buyer",
+  "behaviour_how": "Needs the fabric for a specific event or order date; delivery speed and stock certainty matter more than price.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you buy most things online through Allegro with Smart delivery"
+ },
+ {
+  "id": "P004",
+  "name": "Owen",
+  "age": 27,
+  "segment": "Freelance event / decor / set decorator",
+  "income": 121000,
+  "behaviour": "Colour perfectionist",
+  "behaviour_how": "Has been burned by colours that looked different on screen; orders samples or asks for photos in daylight first.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you have a sewing project due for a friend's wedding next month"
+ },
+ {
+  "id": "P005",
+  "name": "Sana",
+  "age": 22,
+  "segment": "Hobby sewer",
+  "income": 75000,
+  "behaviour": "Allegro price-comparer",
+  "behaviour_how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery.",
+  "objection": "I need it by a specific date",
+  "habit": "you sell what you make on Etsy and Vinted"
+ },
+ {
+  "id": "P006",
+  "name": "Maya",
+  "age": 54,
+  "segment": "Hobby sewer",
+  "income": 71000,
+  "behaviour": "Touch-first buyer",
+  "behaviour_how": "Prefers a local fabric shop where she can feel the drape; buys online only when the shop doesn't have it.",
+  "objection": "I can't feel the quality or the weight before buying",
+  "habit": "you pick up parcels from an InPost locker near your home"
+ },
+ {
+  "id": "P007",
+  "name": "Selin",
+  "age": 25,
+  "segment": "Freelance event / decor / set decorator",
+  "income": 101000,
+  "behaviour": "Instagram/TikTok browser",
+  "behaviour_how": "Discovers fabrics from sewing creators and buys on impulse when something looks beautiful.",
+  "objection": "I can't feel the quality or the weight before buying",
+  "habit": "you sew most evenings after work"
+ },
+ {
+  "id": "P008",
+  "name": "Ruby",
+  "age": 31,
+  "segment": "Hobby sewer",
+  "income": 49000,
+  "behaviour": "Collection bulk buyer",
+  "behaviour_how": "Buys 10 to 30 metres at once for a small production run and watches the price per metre closely.",
+  "objection": "The colour on screen never matches the real thing",
+  "habit": "you pick up parcels from an InPost locker near your home"
+ },
+ {
+  "id": "P009",
+  "name": "Nora",
+  "age": 29,
+  "segment": "Fashion or sewing student",
+  "income": 22000,
+  "behaviour": "Touch-first buyer",
+  "behaviour_how": "Prefers a local fabric shop where she can feel the drape; buys online only when the shop doesn't have it.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you sew most evenings after work"
+ },
+ {
+  "id": "P010",
+  "name": "Fatima",
+  "age": 25,
+  "segment": "Hobby sewer",
+  "income": 45000,
+  "behaviour": "Collection bulk buyer",
+  "behaviour_how": "Buys 10 to 30 metres at once for a small production run and watches the price per metre closely.",
+  "objection": "The colour on screen never matches the real thing",
+  "habit": "you have a sewing project due for a friend's wedding next month"
+ },
+ {
+  "id": "P011",
+  "name": "Tariq",
+  "age": 25,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 154000,
+  "behaviour": "Allegro price-comparer",
+  "behaviour_how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you sew most evenings after work"
+ },
+ {
+  "id": "P012",
+  "name": "Felix",
+  "age": 23,
+  "segment": "Hobby sewer",
+  "income": 102000,
+  "behaviour": "Colour perfectionist",
+  "behaviour_how": "Has been burned by colours that looked different on screen; orders samples or asks for photos in daylight first.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you pick up parcels from an InPost locker near your home"
+ },
+ {
+  "id": "P013",
+  "name": "Zoe",
+  "age": 28,
+  "segment": "Fashion or sewing student",
+  "income": 38000,
+  "behaviour": "Loyal to one online shop",
+  "behaviour_how": "Already has a favourite online fabric shop that knows her and rarely switches.",
+  "objection": "It's probably cheaper on Allegro from someone else",
+  "habit": "you have a sewing project due for a friend's wedding next month"
+ },
+ {
+  "id": "P014",
+  "name": "Dev",
+  "age": 42,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 102000,
+  "behaviour": "Collection bulk buyer",
+  "behaviour_how": "Buys 10 to 30 metres at once for a small production run and watches the price per metre closely.",
+  "objection": "Delivery will cost almost as much as the fabric",
+  "habit": "you pick up parcels from an InPost locker near your home"
+ },
+ {
+  "id": "P015",
+  "name": "Yusuf",
+  "age": 48,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 103000,
+  "behaviour": "Instagram/TikTok browser",
+  "behaviour_how": "Discovers fabrics from sewing creators and buys on impulse when something looks beautiful.",
+  "objection": "It's probably cheaper on Allegro from someone else",
+  "habit": "you sew most evenings after work"
+ },
+ {
+  "id": "P016",
+  "name": "Theo",
+  "age": 28,
+  "segment": "Hobby sewer",
+  "income": 52000,
+  "behaviour": "Allegro price-comparer",
+  "behaviour_how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery.",
+  "objection": "It's probably cheaper on Allegro from someone else",
+  "habit": "you sell what you make on Etsy and Vinted"
+ },
+ {
+  "id": "P017",
+  "name": "Alma",
+  "age": 35,
+  "segment": "Hobby sewer",
+  "income": 76000,
+  "behaviour": "Allegro price-comparer",
+  "behaviour_how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery.",
+  "objection": "I don't know this shop, are they reliable?",
+  "habit": "you follow several sewing creators on Instagram"
+ },
+ {
+  "id": "P018",
+  "name": "Freya",
+  "age": 52,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 53000,
+  "behaviour": "Deadline buyer",
+  "behaviour_how": "Needs the fabric for a specific event or order date; delivery speed and stock certainty matter more than price.",
+  "objection": "What if it's out of stock or stuck on pre-order when I need it?",
+  "habit": "you buy most things online through Allegro with Smart delivery"
+ },
+ {
+  "id": "P019",
+  "name": "Harper",
+  "age": 28,
+  "segment": "Hobby sewer",
+  "income": 90000,
+  "behaviour": "Loyal to one online shop",
+  "behaviour_how": "Already has a favourite online fabric shop that knows her and rarely switches.",
+  "objection": "Delivery will cost almost as much as the fabric",
+  "habit": "you have a sewing project due for a friend's wedding next month"
+ },
+ {
+  "id": "P020",
+  "name": "Emma",
+  "age": 38,
+  "segment": "Small clothing-brand owner or home seamstress selling online",
+  "income": 158000,
+  "behaviour": "Allegro price-comparer",
+  "behaviour_how": "Searches Allegro first, sorts by price including delivery, buys from whoever is cheapest with Smart delivery.",
+  "objection": "I need it by a specific date",
+  "habit": "you sew most evenings after work"
+ }
+]

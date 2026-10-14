@@ -1,0 +1,13 @@
+{
+  "id": "P004",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "I have a wedding job due next month and I can't gamble on a shop I don't know. Nothing here says they offer swatches or real daylight photos, or tells me what's actually in stock, so I'll stick with the supplier whose colours I already trust.",
+  "objection": "The colour won't match the screen, and when I go to reorder the extra metres I need, it'll be sold out or stuck on pre-order.",
+  "would_change_my_mind": "Cheap colour swatches sent within a couple of days, plus real stock numbers shown on the product page, so I know I can get the full length before the deadline.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 22,
+  "price_too_expensive": 32
+}

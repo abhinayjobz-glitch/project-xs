@@ -1,0 +1,13 @@
+{
+  "id": "P013",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "habit",
+  "reason": "I already have my fabric shop that knows me and I'm sewing a wedding outfit with a deadline next month, so this is not the time to gamble on a new seller I've never touched fabric from. 14.90 for black viscose is fine, but it's not low enough to make me switch.",
+  "objection": "I can't feel the drape or see the true colour online, and if a stranger's cut arrives wrong or late I miss the wedding. Plus I'd bet I can find the same viscose cheaper on Allegro.",
+  "would_change_my_mind": "If my usual shop ran out of what I need and they had it, or a cheap swatch I could check before the wedding.",
+  "price_too_cheap": 7,
+  "price_cheap": 11,
+  "price_expensive": 18,
+  "price_too_expensive": 24
+}
